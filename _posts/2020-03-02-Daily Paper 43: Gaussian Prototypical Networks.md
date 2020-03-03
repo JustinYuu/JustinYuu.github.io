@@ -32,7 +32,7 @@ redirect_from:
 
 ### Defining a class  
 
-这里对于prototype的计算也有了一些区别，并不是简单的求平均，而是将协方差矩阵的转置的对角线取值构成的向量s代入进去，公式为p<sub>c</sub> = ∑<sub>i</sub> s<sub>i</sub><sup>c</sup> ○ x<sub>i</sub><sup>c</sup> / ∑<sub>i</sub> s<sub>i</sub><sup>c</sup>，○代表元素各自相乘，除法同理。下面是整体的算法流程：![pic1](images/daily paper/Gaussian prototypical network.png)
+这里对于prototype的计算也有了一些区别，并不是简单的求平均，而是将协方差矩阵的转置的对角线取值构成的向量s代入进去，公式为p<sub>c</sub> = ∑<sub>i</sub> s<sub>i</sub><sup>c</sup> ○ x<sub>i</sub><sup>c</sup> / ∑<sub>i</sub> s<sub>i</sub><sup>c</sup>，○代表元素各自相乘，除法同理。下面是整体的算法流程：![pic1](/images/daily paper/Gaussian prototypical network.png)  
 
 
 
