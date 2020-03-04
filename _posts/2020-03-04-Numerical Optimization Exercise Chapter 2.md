@@ -14,13 +14,13 @@ redirect_from:
 
 第二章我就做了前十道，有一道不会做，其余的应该是正确的。  
 
-![2-1](images/Numerical-Optimization/NO2-1.jpg)  
+![2-1](/images/Numerical-Optimization/NO2-1.jpg)  
 
-![2-2](images/Numerical-Optimization/NO2-2.jpg)  
+![2-2](/images/Numerical-Optimization/NO2-2.jpg)  
 
-![2-3](images/Numerical-Optimization/NO2-3.jpg)  
+![2-3](/images/Numerical-Optimization/NO2-3.jpg)  
 
-![2-4](images/Numerical-Optimization/NO2-4.jpg)  
+![2-4](/images/Numerical-Optimization/NO2-4.jpg)  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
