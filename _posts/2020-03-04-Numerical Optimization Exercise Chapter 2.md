@@ -10,8 +10,6 @@ redirect_from:
 
 # Daily Paper 44: Numerical Optimization Exercise Chapter 2  
 
-## Introduction  
-
 这两天在看大黄书和吴立德教授的数值分析，把课后题答案放在这里。  
 
 第二章我就做了前十道，有一道不会做，其余的应该是正确的。  
