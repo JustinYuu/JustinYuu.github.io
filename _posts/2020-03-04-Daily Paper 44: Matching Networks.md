@@ -8,7 +8,7 @@ redirect_from:
   - /2020/03/04/
 ---
 
-# Daily Paper 43: Matching Networks for One Shot Learning  
+# Daily Paper 44: Matching Networks for One Shot Learning  
 
 ## Introduction  
 
