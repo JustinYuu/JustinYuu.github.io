@@ -68,7 +68,7 @@ f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</s
 ## 收敛性和收敛速度  
 
 由于在线搜索中，需要同时定义步长和方向，所以两者要一起分析才行。对于收敛速度而言，通常定义一个夹角θ<sub>k</sub>，用来表示搜索方向p<sub>k</sub>和最速下降方向-▽f<sub>k</sub>之间的角度。于是就有了下一个定理，也叫做Lipschitz condition:  
-s若f(x)下面有界(f(x)≥M)，f(x)有一阶导数(▽f(x)存在), ||▽f(x) - ▽f($\overline{x}$)||≤L||x-$\overline{x}$||, 则∑||▽f(x)||²cos²θ<sub>k</sub> < ∞  
+s若f(x)下面有界(f(x)≥M)，f(x)有一阶导数(▽f(x)存在), ||▽f(x) - ▽f(x<sub>avg</sub>)||≤L||x-x<sub>avg</sub>||, 则∑||▽f(x)||²cos²θ<sub>k</sub> < ∞  
 
 
 
