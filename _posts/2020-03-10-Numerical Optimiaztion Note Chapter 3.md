@@ -25,6 +25,35 @@ redirect_from:
 对于p<sub>k</sub>的选择，不同的方法有着不同的选择方式。首先定义ψ(α)=f(x<sub>k</sub>+αp<sub>k</sub>)，此函数是以α为自变量，p<sub>k</sub>和x<sub>k</sub>都是已知的值，那么α的取值应该是ψ的全局最优解。  
 
 对于该函数，很明显有ψ(0)=f(x<sub>k</sub>)，简写为f<sub>k</sub>, ψ'(α) = ▽f(x<sub>k</sub>+αp<sub>k</sub>)<sup>T</sup>p<sub>k</sub>, ψ'(0)=▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>, p<sub>k</sub>是下降方向，所以ψ'(0)需小于0，即▽f<sub>k</sub><sup>T</sup>p<sub>k</sub><0。  
+使用最速下降法的时候，p<sub>k</sub><sup>G</sup>=-▽f<sub>k</sub><sup>T</sup>，则ψ'(0)=p<sub>k</sub><sup>G</sup>▽f<sub>k</sub><sup>T</sup><0恒成立。  
+
+使用牛顿法时，p<sub>k</sub><sup>N</sup> = -▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>，则ψ'(0)=-▽f<sub>k</sub><sup>T</sup>▽f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>，当▽²f<sub>k</sub>正定时下降。  
+
+使用拟牛顿法时，p<sub>k</sub><sup>B</sup> = -B<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>，当B<sub>k</sub>正定时下降。  
+
+## α<sub>k</sub>的选择  
+
+对于步长的选择，我们有之前的函数ψ(α)=f(x<sub>k</sub>+αp<sub>k</sub>)，那么α<sub>k</sub> = argmin ψ(α) = argmin f(x<sub>k</sub>+αp<sub>k</sub>)。  
+
+### Wolfe condition  
+
+一般的，我们认为对于步长而言，一般需要提供足够的目标函数值的减少，也就是说每一次迭代都必须有足够明显的效果，那么我们可以显示指定一个值，使得每一步迭代后的下降值都必须大于该值才可将迭代过程视为有效。这就是Wolfe条件的第一个子条件，也叫做Armijo condition: f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>1</sub>α▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>, c<sub>1</sub>∈(0, 1)。  
+
+该公式需要用图像来理解，下图是黄书里的示例图，l(α)代表上述不等式的右侧部分，只有ψ(α)小于l(α)的时候，α才能够被接受。  
+
+![NB3-1](/images/Numerical-Optimization/NB3-1.png)  
+
+第一个子条件可以保证下降的值不会太小，但是从上图中可以看出，当α非常小的时候，几乎是必然满足该子条件的，那么该迭代的效率就会很低，所以还需要第二个约束条件，使得每一次跌打α的值变化不能太小，这叫做curvature condition： ▽f(x<sub>k</sub>+α<sub>k</sub>p<sub>k</sub>)<sup>T</sup>p<sub>k</sub>≥c<sub>2</sub>▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>, c<sub>2</sub>∈(c1, 1)，该约束左侧其实就是ψ'(α<sub>k</sub>)，其几何意义是使得ψ在α<sub>k</sub>点的斜率必须比c<sub>2</sub>倍的ψ'(0)大，下图是该约束的几何表示，我们可以看出在约束1的条件下又通过一阶导进行了第二次筛选。![NB3-2](/images/Numerical-Optimization/NB3-2.png)  
+
+整体的筛选流程见下图：![NB3-3](/images/Numerical-Optimization/NB3-3.png)  
+
+此外，Wolfe条件并不能保证找到的步长能够特别接近ψ的最小值，所以可以进一步调整条件2，从而使得α<sub>k</sub>在至少一个局部最小值或者驻点的宽邻域内，修改后的条件称作Strong Wolfe condition:  
+f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</sub>▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>   (1)  
+|▽f(x<sub>k</sub>+α<sub>k</sub>p<sub>k</sub>)<sup>T</sup>p<sub>k</sub>| ≤ c<sub>2</sub>|▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>|, 0<c1<c2<1    (2)  
+
+对于强Wolfe条件为什么能够保证在驻点或极小值点的邻域上，黄书上认为这样ψ'(α<sub>k</sub>)就不再会too positive，借此排除所有远离ψ的驻点的值。  
+
+这里还有一个引理Lemma 3.1，这个引理简单来讲就是证明了满足Wolfe条件的α是存在的，也就是这个方法的可行性。具体的引理内容和证明过程见下图。![NB3-4](/images/Numerical-Optimization/NB3-4.png)  
 
 
 
