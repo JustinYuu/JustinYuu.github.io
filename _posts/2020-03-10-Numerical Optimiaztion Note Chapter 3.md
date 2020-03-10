@@ -45,7 +45,8 @@ redirect_from:
 
 第一个子条件可以保证下降的值不会太小，但是从上图中可以看出，当α非常小的时候，几乎是必然满足该子条件的，那么该迭代的效率就会很低，所以还需要第二个约束条件，使得每一次跌打α的值变化不能太小，这叫做curvature condition： ▽f(x<sub>k</sub>+α<sub>k</sub>p<sub>k</sub>)<sup>T</sup>p<sub>k</sub>≥c<sub>2</sub>▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>, c<sub>2</sub>∈(c1, 1)，该约束左侧其实就是ψ'(α<sub>k</sub>)，其几何意义是使得ψ在α<sub>k</sub>点的斜率必须比c<sub>2</sub>倍的ψ'(0)大，下图是该约束的几何表示，我们可以看出在约束1的条件下又通过一阶导进行了第二次筛选。![NB3-2](/images/Numerical-Optimization/NB3-2.png)  
 
-整体的筛选流程见下图：![NB3-3](/images/Numerical-Optimization/NB3-3.png)  
+整体的筛选流程见下图：  
+![NB3-3](/images/Numerical-Optimization/NB3-3.png)  
 
 此外，Wolfe条件并不能保证找到的步长能够特别接近ψ的最小值，所以可以进一步调整条件2，从而使得α<sub>k</sub>在至少一个局部最小值或者驻点的宽邻域内，修改后的条件称作Strong Wolfe condition:  
 f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</sub>▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>   (1)  
@@ -53,7 +54,24 @@ f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</s
 
 对于强Wolfe条件为什么能够保证在驻点或极小值点的邻域上，黄书上认为这样ψ'(α<sub>k</sub>)就不再会too positive，借此排除所有远离ψ的驻点的值。  
 
-这里还有一个引理Lemma 3.1，这个引理简单来讲就是证明了满足Wolfe条件的α是存在的，也就是这个方法的可行性。具体的引理内容和证明过程见下图。![NB3-4](/images/Numerical-Optimization/NB3-4.png)  
+这里还有一个引理Lemma 3.1，这个引理简单来讲就是证明了满足Wolfe条件的α是存在的，也就是这个方法的可行性。具体的引理内容和证明过程见下图。  
+![NB3-4](/images/Numerical-Optimization/NB3-4.png)  
+
+此外黄书上还介绍了goldstein条件，不过吴老师没讲，我这里也先略过了，以后用得到再补好了。  
+
+### α<sub>k</sub>的求解办法  
+
+这里吴教授还介绍了一种求解φ'(α)=0的方法，称作函数折值法，其具体操作步骤是，给定β个ψ(α<sub>k</sub>)和ψ'(α<sub>k</sub>)值，求解β个多项式参数，从而接触ψ(α)的多项式形式。  
+
+对于一般的情况，通常是先取任意一个α<sub>i</sub>，得到ψ(0), ψ'(0), ψ(α<sub>i</sub>), ψ'(α<sub>i</sub>)的值，从而解出一个ψ(α)=a<sub>0</sub>+a<sub>1</sub>x+a<sub>2</sub>x²+a<sub>3</sub>x<sup>3</sup>的参数解。  
+
+## 收敛性和收敛速度  
+
+由于在线搜索中，需要同时定义步长和方向，所以两者要一起分析才行。对于收敛速度而言，通常定义一个夹角θ<sub>k</sub>，用来表示搜索方向p<sub>k</sub>和最速下降方向-▽f<sub>k</sub>之间的角度。于是就有了下一个定理，也叫做Lipschitz condition:  
+s若f(x)下面有界(f(x)≥M)，f(x)有一阶导数(▽f(x)存在), ||▽f(x) - ▽f($\overline{x}$)||≤L||x-$\overline{x}$||, 则∑||▽f(x)||²cos²θ<sub>k</sub> < ∞  
+
+
+
 
 
 
