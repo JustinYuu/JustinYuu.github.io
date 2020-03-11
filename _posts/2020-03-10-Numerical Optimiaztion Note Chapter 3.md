@@ -8,7 +8,7 @@ redirect_from:
   - /2020/03/10/
 ---
 
-# Daily Paper 44: Numerical Optimization Exercise Chapter 2  
+# Numerical Optimization Exercise Chapter 2  
 
 ## Introduction  
 
@@ -66,6 +66,48 @@ f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</s
 对于一般的情况，通常是先取任意一个α<sub>i</sub>，得到ψ(0), ψ'(0), ψ(α<sub>i</sub>), ψ'(α<sub>i</sub>)的值，从而解出一个ψ(α)=a<sub>0</sub>+a<sub>1</sub>x+a<sub>2</sub>x²+a<sub>3</sub>x<sup>3</sup>的参数解。  
 
 ## 收敛性和收敛速度  
+
+### 一些概念  
+
+在进入这一部分之前，需要先介绍一些概念，从而有利于后续部分的理解。  
+
+#### 算法的收敛性  
+
+所谓算法的收敛性，也就是目标函数f能不能收敛，其严格的定义为lim<sub>k→∞</sub>||▽f(x<sub>k</sub>)||=0. 此外还有一个略弱的表示，为lim<sub>k→∞</sub>inf||▽f(x<sub>k</sub>)||=0，也就是使得f梯度的下极限为0，换言之，就是使得||▽f<sub>k</sub>||始终小于一个足够小的值ε。满足这两个条件中的任何一个的算法，都可以视为收敛。  
+
+#### 算法的收敛速度  
+
+所谓的算法收敛速度，指的就是在每一轮迭代后x改变的程度，这里举了三个收敛方式，其收敛速度也各不相同。  
+
+线性： ||x<sub>k+1</sub> - x<sup>*</sup>|| ≤ r·||x<sub>k</sub>-x<sup>*</sup>||, 0<r<1  
+二次： ||x<sub>k+1</sub> - x<sup>*</sup>|| ≤ L·||x<sub>k</sub>-x<sup>*</sup>||², L>0  
+超线性：||x<sub>k+1</sub> - x<sup>*</sup>|| ≤ o(||x<sub>k</sub>-x<sup>*</sup>||)  
+
+#### 所需条件  
+
+这一部分讲一下研究收敛性和收敛速度所需的一些基本条件。  
+
+##### 关于f(x)  
+
+首先定义水平集: L={x\|f(x)≤f(x<sub>0</sub>)}, 这里的x<sub>0</sub>为出发点，也就是说不管怎么优化，优化后的目标函数值肯定要比初始值要小，才算有效果。  
+
+对于f(x)而言，一般有三个要求：f(x)有界（有上界且有下界），f(x)连续，f(x) Lipschitz连续: ||f(x)-f(y)||≤L||x-y||。  
+
+对于▽f(x)而言，一般也有三个同样的要求：▽f(x)有界、连续且Lipschitz连续。对于二阶导▽²f(x)而言，也有同样的三个要求。那么对于f(x)，▽f(x)和▽²f(x)这三组不同的要求，其要求难度是逐渐升高的，要求阶数越高的导数，难度越大。  
+
+##### 关于方向  
+
+方向就是p<sub>k</sub>，这里上面已经说的很清楚了，需要使得▽f<sub>k</sub>²p<sub>k</sub><0, 那么最速下降法、牛顿法和拟牛顿法都有不同的要求，上面都提过了，这里就不再重复。  
+
+##### 关于步长  
+
+步长就是α<sub>k</sub>， α<sub>k</sub> = argmin f(x<sub>k</sub>+αp<sub>k</sub>)，上面也提到过，一般需要满足Wolfe条件。  
+
+##### 关于x<sub>k</sub>  
+
+设最优解为x<sup>\*</sup>，且最优解有二阶导数，那么要使得x<sub>k</sub>→x<sup>\*</sup>的充分条件就是▽f(x<sup>\*</sup>)=0，且▽²f(x<sup>\*</sup>)正定。  
+
+### 收敛性  
 
 由于在线搜索中，需要同时定义步长和方向，所以两者要一起分析才行。对于收敛速度而言，通常定义一个夹角θ<sub>k</sub>，用来表示搜索方向p<sub>k</sub>和最速下降方向-▽f<sub>k</sub>之间的角度。于是就有了下一个定理，也叫做Lipschitz condition:  
 s若f(x)下面有界(f(x)≥M)，f(x)有一阶导数(▽f(x)存在), ||▽f(x) - ▽f(x<sub>avg</sub>)||≤L||x-x<sub>avg</sub>||, 则∑||▽f(x)||²cos²θ<sub>k</sub> < ∞  
