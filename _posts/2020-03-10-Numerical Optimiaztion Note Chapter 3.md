@@ -109,13 +109,54 @@ f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</s
 
 ### 收敛性  
 
-由于在线搜索中，需要同时定义步长和方向，所以两者要一起分析才行。对于收敛速度而言，通常定义一个夹角θ<sub>k</sub>，用来表示搜索方向p<sub>k</sub>和最速下降方向-▽f<sub>k</sub>之间的角度。于是就有了下一个定理，也叫做Lipschitz condition:  
-s若f(x)下面有界(f(x)≥M)，f(x)有一阶导数(▽f(x)存在), \|\|▽f(x) - ▽f(x<sub>avg</sub>)\|\|≤L\|\|x-x<sub>avg</sub>\|\|, 则∑\|\|▽f(x)\|\|²cos²θ<sub>k</sub> < ∞  
+#### 定理3.2  
 
+由于在线搜索中，需要同时定义步长和方向，所以两者要一起分析才行。对于收敛速度而言，通常定义一个夹角θ<sub>k</sub>，用来表示搜索方向p<sub>k</sub>和最速下降方向-▽f<sub>k</sub>之间的角度。于是就有了定理3.2，也叫做Zoutendijk Theorem:  
+若f(x)下面有界(f(x)≥M)，f(x)有一阶导数(▽f(x)存在)且满足Lipschitz条件(\|\|▽f(x) - ▽f(x<sub>avg</sub>)\|\|≤L\|\|x-x<sub>avg</sub>\|\|), α<sub>k</sub>满足Wolfe条件，p<sub>k</sub>下降，则∑\|\|▽f(x)\|\|²cos²θ<sub>k</sub> < ∞  
 
+下面是对该定理的证明：  
 
+由Wolfe条件1，也就是f<sub>k+1</sub> ≤ f<sub>k</sub> + c<sub>1</sub>α<sub>k</sub>▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>可以得到  
+f<sub>k</sub> - f<sub>k+1</sub> ≥ -c<sub>1</sub>α<sub>k</sub>▽f<sub>k</sub><sup>T</sup>p<sub>k</sub> = c<sub>1</sub>α<sub>k</sub>\|\|▽f<sub>k</sub>\|\|·\|\|p<sub>k</sub>\|\|·cosθ<sub>k</sub>  
 
+因为α<sub>k</sub>>0, 所以  
+f<sub>k</sub> - f<sub>k+1</sub> / α<sub>k</sub>·\|\|p<sub>k</sub>\|\| ≥ c<sub>1</sub>\|\|▽f<sub>k</sub>\|\|cosθ<sub>k</sub>  (1)  
 
+对于该式子的理解是这样的，由于α<sub>k</sub>\|\|p<sub>k</sub>\|\| = \|\|x<sub>k+1</sub> - x<sub>k</sub>\|\|，所以上述等式左侧部分为x<sub>k+1</sub>和x<sub>k</sub>之间的平均斜率(的负值)。  
+
+由Wolfe条件2，也就是▽f<sub>k+1</sub><sup>T</sup>p<sub>k</sub> ≥ c<sub>2</sub>▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>，有  
+
+▽f<sub>k+1</sub><sup>T</sup>p<sub>k</sub> - ▽f<sub>k</sub><sup>T</sup>p<sub>k</sub> ≥ (c<sub>2</sub>-1)▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>  
+
+即(▽f<sub>k+1</sub> - ▽f<sub>k</sub>)<sup>T</sup>p<sub>k</sub> ≥ (1-c<sub>2</sub>)(-▽f<sub>k</sub><sup>T</sup>p<sub>k</sub>)  (2)  
+
+由Lipschitz条件得 \|(▽f<sub>k+1</sub> - ▽f<sub>k</sub>)<sup>T</sup>p<sub>k</sub>\| ≤ \|\|▽f<sub>k+1</sub> - ▽f<sub>k</sub>\|\|·\|\|p<sub>k</sub>\|\| ≤ L·\|\|x<sub>k+1</sub> - x<sub>k</sub>\|\|·\|\|p<sub>k</sub>\|\| = L·α<sub>k</sub>\|\|p<sub>k</sub>\|\|²  (3)  
+
+由(2)(3)得，  
+
+(1-c<sub>2</sub>)(-▽f<sub>k</sub>p<sub>k</sub>) = (1-c<sub>2</sub>)·\|\|▽f<sub>k</sub>\|\|·\|\|p<sub>k</sub>\|\|cosθ<sub>k</sub>≤α<sub>k</sub>\|\|p<sub>k</sub>\|\|  (4)  
+
+由(1)(4)得，  
+
+f<sub>k</sub> - f<sub>k+1</sub> ≥ c<sub>1</sub>(1-c<sub>2</sub>)/L * \|\|▽f<sub>k</sub>\|\|²cos²θ<sub>k</sub>  
+
+由于f有下界，则∑<sub>k</sub> c<sub>1</sub>(1-c<sub>2</sub>)/L \|\|▽f<sub>k</sub>\|\|²cos²θ<sub>k</sub> ≤ ∑<sub>k</sub> f<sub>k</sub>- f<sub>k+1</sub> < ∞  
+
+#### 最速下降法  
+
+对于最速下降法，p<sub>k</sub> = -▽f<sub>k</sub>, cosθ<sub>k</sub> = 1, θ<sub>k</sub> = 0°。由定理3.2可知∑<sub>k</sub>\|\|▽f<sub>k</sub>\|\|²cos²θ<sub>k</sub> = ∑<sub>k</sub>\|\|▽f<sub>k</sub>\|\|²＜∞，故f<sub>k</sub>收敛，且\|\|▽<sub>k</sub>\|\|→0  
+
+#### 拟牛顿法和牛顿法  
+
+对于拟牛顿法，B<sub>k</sub>正定，这里由于cosθ不为1，所以我们要想证明函数收敛，必须证明lim<sub>k→∞</sub>cos²θ<sub>k</sub> ≥ δ > 0, 则f<sub>k</sub>收敛。  
+
+若上述条件满足，则需满足\|\|B<sub>k</sub>\|\|·\|\|B<sub>k</sub><sup>-1</sup>\|\|， 也就是K(B<sub>k</sub>)，即B<sub>k</sub>的条件数，需要小于等于M，即不是无穷大。  
+
+对于牛顿法，B<sub>k</sub>为Hessian矩阵，不过吴老师没有进行下一步的阐述。  
+
+#### 补充知识  
+
+这里还需要一些矩阵的补充知识，若A正定，则A=UΛU<sup>T</sup>, 其中Λ为元素值为A的特征值的对角矩阵，则K(A) = λ<sub>max</sub>/λ<sub>min</sub>。且由于A正定，那么A<sup>-1</sup>存在，A<sup>-1</sup>的特征值为1/λ<sub>1</sub>, 1/λ<sub>2</sub>, ..., 1/λ<sub>n</sub>, 同理A<sup>1/2</sup>的特征值为√λ<sub>1</sub>, √λ<sub>2</sub>, ..., √λ<sub>n</sub>。  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
