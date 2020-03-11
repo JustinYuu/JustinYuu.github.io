@@ -79,9 +79,9 @@ f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</s
 
 所谓的算法收敛速度，指的就是在每一轮迭代后x改变的程度，这里举了三个收敛方式，其收敛速度也各不相同。  
 
-线性： ||x<sub>k+1</sub> - x<sup>*</sup>|| ≤ r·||x<sub>k</sub>-x<sup>*</sup>||, 0<r<1  
-二次： ||x<sub>k+1</sub> - x<sup>*</sup>|| ≤ L·||x<sub>k</sub>-x<sup>*</sup>||², L>0  
-超线性：||x<sub>k+1</sub> - x<sup>*</sup>|| ≤ o(||x<sub>k</sub>-x<sup>*</sup>||)  
+线性： \|\|x<sub>k+1</sub> - x<sup>*</sup>\|\| ≤ r·\|\|x<sub>k</sub>-x<sup>*</sup>\|\|, 0<r<1  
+二次： \|\|x<sub>k+1</sub> - x<sup>*</sup>\|\| ≤ L·\|\|x<sub>k</sub>-x<sup>*</sup>\|\|², L>0  
+超线性：\|\|x<sub>k+1</sub> - x<sup>*</sup>\|\| ≤ o(\|\|x<sub>k</sub>-x<sup>*</sup>\|\|)  
 
 #### 所需条件  
 
