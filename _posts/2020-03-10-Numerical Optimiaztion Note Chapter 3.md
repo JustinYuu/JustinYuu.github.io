@@ -91,7 +91,7 @@ f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</s
 
 首先定义水平集: L={x\|f(x)≤f(x<sub>0</sub>)}, 这里的x<sub>0</sub>为出发点，也就是说不管怎么优化，优化后的目标函数值肯定要比初始值要小，才算有效果。  
 
-对于f(x)而言，一般有三个要求：f(x)有界（有上界且有下界），f(x)连续，f(x) Lipschitz连续: ||f(x)-f(y)||≤L||x-y||。  
+对于f(x)而言，一般有三个要求：f(x)有界（有上界且有下界），f(x)连续，f(x) Lipschitz连续: \|\|f(x)-f(y)\|\|≤L\|\|x-y\|\|。  
 
 对于▽f(x)而言，一般也有三个同样的要求：▽f(x)有界、连续且Lipschitz连续。对于二阶导▽²f(x)而言，也有同样的三个要求。那么对于f(x)，▽f(x)和▽²f(x)这三组不同的要求，其要求难度是逐渐升高的，要求阶数越高的导数，难度越大。  
 
@@ -110,7 +110,7 @@ f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</s
 ### 收敛性  
 
 由于在线搜索中，需要同时定义步长和方向，所以两者要一起分析才行。对于收敛速度而言，通常定义一个夹角θ<sub>k</sub>，用来表示搜索方向p<sub>k</sub>和最速下降方向-▽f<sub>k</sub>之间的角度。于是就有了下一个定理，也叫做Lipschitz condition:  
-s若f(x)下面有界(f(x)≥M)，f(x)有一阶导数(▽f(x)存在), ||▽f(x) - ▽f(x<sub>avg</sub>)||≤L||x-x<sub>avg</sub>||, 则∑||▽f(x)||²cos²θ<sub>k</sub> < ∞  
+s若f(x)下面有界(f(x)≥M)，f(x)有一阶导数(▽f(x)存在), \|\|▽f(x) - ▽f(x<sub>avg</sub>)\|\|≤L\|\|x-x<sub>avg</sub>\|\|, 则∑\|\|▽f(x)\|\|²cos²θ<sub>k</sub> < ∞  
 
 
 
