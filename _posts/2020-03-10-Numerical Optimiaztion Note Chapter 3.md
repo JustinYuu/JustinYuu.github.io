@@ -142,6 +142,10 @@ f<sub>k</sub> - f<sub>k+1</sub> ≥ c<sub>1</sub>(1-c<sub>2</sub>)/L * \|\|▽f<
 
 由于f有下界，则∑<sub>k</sub> c<sub>1</sub>(1-c<sub>2</sub>)/L \|\|▽f<sub>k</sub>\|\|²cos²θ<sub>k</sub> ≤ ∑<sub>k</sub> f<sub>k</sub>- f<sub>k+1</sub> < ∞  
 
+#### 补充知识  
+
+这里还需要一些矩阵的补充知识，若A正定，则A=UΛU<sup>T</sup>, 其中Λ为元素值为A的特征值的对角矩阵，则K(A) = λ<sub>max</sub>/λ<sub>min</sub>。且由于A正定，那么A<sup>-1</sup>存在，A<sup>-1</sup>的特征值为1/λ<sub>1</sub>, 1/λ<sub>2</sub>, ..., 1/λ<sub>n</sub>, 同理A<sup>1/2</sup>的特征值为√λ<sub>1</sub>, √λ<sub>2</sub>, ..., √λ<sub>n</sub>。  
+
 #### 最速下降法  
 
 对于最速下降法，p<sub>k</sub> = -▽f<sub>k</sub>, cosθ<sub>k</sub> = 1, θ<sub>k</sub> = 0°。由定理3.2可知∑<sub>k</sub>\|\|▽f<sub>k</sub>\|\|²cos²θ<sub>k</sub> = ∑<sub>k</sub>\|\|▽f<sub>k</sub>\|\|²＜∞，故f<sub>k</sub>收敛，且\|\|▽<sub>k</sub>\|\|→0  
@@ -152,11 +156,54 @@ f<sub>k</sub> - f<sub>k+1</sub> ≥ c<sub>1</sub>(1-c<sub>2</sub>)/L * \|\|▽f<
 
 若上述条件满足，则需满足\|\|B<sub>k</sub>\|\|·\|\|B<sub>k</sub><sup>-1</sup>\|\|， 也就是K(B<sub>k</sub>)，即B<sub>k</sub>的条件数，需要小于等于M，即不是无穷大。  
 
+如果满足上述条件，那么cosθ<sub>k</sub> = -▽f<sub>k</sub> · p<sub>k</sub>/ (\|\|▽f<sub>k</sub>)\|\| · \|\|p<sub>k</sub>\|\| = ▽f<sub>k</sub> B<sub>k</sub><sup>-1</sup> ▽f<sub>k</sub> / (\|\|▽f<sub>k</sub>\|\|·\|\|B<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>) ≥ (1/λ<sub>n</sub>)·\|\|▽f<sub>k</sub>\|\|² / (\|\|B<sub>k</sub><sup>-1</sup>\|\|·\|\|▽f<sub>k</sub>\|\|²) =(1/λ<sub>n</sub>)/(1/λ<sub>1</sub>) = λ<sub>1</sub> / λ<sub>n</sub> ≥ 1/M > 0  
+
 对于牛顿法，B<sub>k</sub>为Hessian矩阵，不过吴老师没有进行下一步的阐述。  
 
-#### 补充知识  
+### 收敛速度  
 
-这里还需要一些矩阵的补充知识，若A正定，则A=UΛU<sup>T</sup>, 其中Λ为元素值为A的特征值的对角矩阵，则K(A) = λ<sub>max</sub>/λ<sub>min</sub>。且由于A正定，那么A<sup>-1</sup>存在，A<sup>-1</sup>的特征值为1/λ<sub>1</sub>, 1/λ<sub>2</sub>, ..., 1/λ<sub>n</sub>, 同理A<sup>1/2</sup>的特征值为√λ<sub>1</sub>, √λ<sub>2</sub>, ..., √λ<sub>n</sub>。  
+收敛速度要根据方法不同来讨论。  
+
+#### 最速下降法  
+
+对于最速下降法，收敛速度是线性的，这里老师没有证明。  
+
+#### 牛顿法  
+
+牛顿法就比较复杂了，对于最纯粹的牛顿法，一般先将α<sub>k</sub>定义为1，那么x<sub>k+1</sub> = x<sub>k</sub> - ▽²f<sub>k</sub><sup>-1</sup> · ▽f<sub>k</sub>。对于这种情况，有定理3.5：假设f有下界，▽²f(x)在x<sup>\*</sup>的邻域Lipschitz连续，在x<sup>\*</sup>满足二阶充分条件▽f(x<sup>\*</sup>)=0, ▽²f(x)正定，且x离x<sup>\*</sup>充分接近，则有:  
+
+1. x<sub>k</sub> → x<sup>\*</sup>  
+2. \|\|x<sub>k+1</sub> - x<sup>*</sup>\|\| ≤ L<sub>1</sub> \|\|x<sub>k</sub>-x<sup>\*</sup>\|\|² （二次收敛）  
+3. \|\|▽f<sub>k+1</sub> ≤ L<sub>2</sub>\|\|▽f<sub>k</sub>\|\|² （二次收敛）  
+
+下面是证明，这里采用的是吴教授的中值定理证明方式，和黄书上的定积分中值定理证明方式略有不同。  
+
+首先证明2. \|\|x<sub>k+1</sub> - x<sup>*</sup>\|\| =  
+\|\|x<sub>k+1</sub> -▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub> - x<sup>*</sup>\|\| =  
+\|\|x<sub>k+1</sub> - x<sup>*</sup> - ▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>\|\| =  
+\|▽²f<sub>k</sub><sup>-1</sup>\[▽²f<sub>k</sub>(x<sub>k</sub>-x<sup>\*</sup>) - (▽f<sub>k</sub>-▽f<sub>\*</sub>)]\| ≤  
+\|\|▽²f<sub>k</sub><sup>-1</sup>\|\| · \|\|▽²f<sub>k</sub>(x<sub>k</sub>-x<sup>\*</sup>) - ▽²f(x<sub>k</sub>+t(x<sub>k</sub>-x<sup>*</sup>))(x<sub>k</sub>-x<sup>\*</sup>)\|\|, t∈(0, 1) =  
+\|\|▽²f<sub>k</sub><sup>-1</sup>\|\| · \|\|(▽²f<sub>k</sub> - ▽²f(x<sub>k</sub>+t(x<sub>k</sub> - x<sup>\*</sup>)))\|\| · \|\| x<sub>k</sub> - x<sup>\*</sup>\|\| ≤(Lipschitz)  
+\|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|t(x<sub>k</sub>-x<sup>\*</sup>)\|\|·\|\|x-x<sup>\*</sup>\|\| ≤  
+\|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|² ≤  
+2\|\|▽²f(x<sup>\*</sup>)<sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|²(x和x<sup>*</sup>足够接近)  
+
+由于L前面的部分为常数，所以二次收敛证毕。又由于2成立，那么\|\|x<sub>k+1</sub>-x<sup>\*</sup>\|\|可收敛到0，故1也成立，下面证3。  
+
+同样有中值定理得到，▽f(x<sub>k</sub>) - ▽f(x<sup>\*</sup>) = ▽²f(x<sub>k</sub>+t(x<sub>k</sub>-x<sup>\*</sup>))(x<sub>k</sub>-x<sup>\*</sup>)，又由于牛顿法中，▽²f(x<sub>k</sub>)p<sub>k</sub> = -▽f(x<sub>k</sub>)，故▽²f<sub>k</sub>p<sub>k</sub>+▽f<sub>k</sub> = 0.  
+
+那么我们有\|\|▽f<sub>k+1</sub>\|\| = \|\|▽f<sub>k+1</sub> - ▽²f<sub>k</sub>p<sub>k</sub> - ▽f<sub>k</sub>\|\| =  
+\|\|▽f<sub>k+1</sub> - ▽f<sub>k</sub> - ▽²f<sub>k</sub>p<sub>k</sub>\|\| ≤  
+\|\|▽²f(x<sub>k</sub>+tp<sub>k</sub>)·(x<sub>k+1</sub> - x<sub>k</sub>) - ▽²f<sub>k</sub>p<sub>k</sub>\|\| =  
+\|\|(▽²f(x<sub>k</sub>+tp<sub>k</sub>)-▽²f<sub>k</sub>)p<sub>k</sub>\|\| ≤  
+L·\|\|tp<sub>k</sub>\|\|·\|\|p<sub>k</sub>\|\| ≤  
+L·\|\|p<sub>k</sub>\|\|² =  
+L·\|\|▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>\|\|² ≤  
+L·\|\|▽²f<sub>k</sub><sup>-1</sup>\|\|²\|\|▽f<sub>k</sub>²\|\| ≤  
+L·2·\|\|▽²f(x<sup>\*</sup><sup>-1</sup>)\|\|²\|\|▽f<sub>x</sub>\|\|²  
+
+前面部分为常数，故得证。  
+
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
