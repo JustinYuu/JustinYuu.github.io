@@ -178,29 +178,25 @@ f<sub>k</sub> - f<sub>k+1</sub> ≥ c<sub>1</sub>(1-c<sub>2</sub>)/L * \|\|▽f<
 
 下面是证明，这里采用的是吴教授的中值定理证明方式，和黄书上的定积分中值定理证明方式略有不同。  
 
-首先证明2. \|\|x<sub>k+1</sub> - x<sup>*</sup>\|\| =  
-\|\|x<sub>k+1</sub> -▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub> - x<sup>*</sup>\|\| =  
-\|\|x<sub>k+1</sub> - x<sup>*</sup> - ▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>\|\| =  
-\|▽²f<sub>k</sub><sup>-1</sup>\[▽²f<sub>k</sub>(x<sub>k</sub>-x<sup>\*</sup>) - (▽f<sub>k</sub>-▽f<sub>\*</sub>)]\| ≤  
-\|\|▽²f<sub>k</sub><sup>-1</sup>\|\| · \|\|▽²f<sub>k</sub>(x<sub>k</sub>-x<sup>\*</sup>) - ▽²f(x<sub>k</sub>+t(x<sub>k</sub>-x<sup>*</sup>))(x<sub>k</sub>-x<sup>\*</sup>)\|\|, t∈(0, 1) =  
-\|\|▽²f<sub>k</sub><sup>-1</sup>\|\| · \|\|(▽²f<sub>k</sub> - ▽²f(x<sub>k</sub>+t(x<sub>k</sub> - x<sup>\*</sup>)))\|\| · \|\| x<sub>k</sub> - x<sup>\*</sup>\|\| ≤(Lipschitz)  
-\|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|t(x<sub>k</sub>-x<sup>\*</sup>)\|\|·\|\|x-x<sup>\*</sup>\|\| ≤  
-\|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|² ≤  
-2\|\|▽²f(x<sup>\*</sup>)<sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|²(x和x<sup>*</sup>足够接近)  
+首先证明2. \|\|x<sub>k+1</sub> - x<sup>*</sup>\|\|  
+= \|\|x<sub>k+1</sub> -▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub> - x<sup>*</sup>\|\|  
+= \|\|x<sub>k+1</sub> - x<sup>*</sup> - ▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>\|\|  
+= \|▽²f<sub>k</sub><sup>-1</sup>\[▽²f<sub>k</sub>(x<sub>k</sub>-x<sup>\*</sup>) - (▽f<sub>k</sub>-▽f<sub>\*</sub>)]\|  
+≤ \|\|▽²f<sub>k</sub><sup>-1</sup>\|\| · \|\|▽²f<sub>k</sub>(x<sub>k</sub>-x<sup>\*</sup>) - ▽²f(x<sub>k</sub>+t(x<sub>k</sub>-x<sup>*</sup>))(x<sub>k</sub>-x<sup>\*</sup>)\|\|, t∈(0, 1)  
+= \|\|▽²f<sub>k</sub><sup>-1</sup>\|\| · \|\|(▽²f<sub>k</sub> - ▽²f(x<sub>k</sub>+t(x<sub>k</sub> - x<sup>\*</sup>)))\|\| · \|\| x<sub>k</sub> - x<sup>\*</sup>\|\|  
+≤(Lipschitz) \|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|t(x<sub>k</sub>-x<sup>\*</sup>)\|\|·\|\|x-x<sup>\*</sup>\|\| ≤  
+\|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|²  
+≤ 2\|\|▽²f(x<sup>\*</sup>)<sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|²(x和x<sup>*</sup>足够接近)  
 
 由于L前面的部分为常数，所以二次收敛证毕。又由于2成立，那么\|\|x<sub>k+1</sub>-x<sup>\*</sup>\|\|可收敛到0，故1也成立，下面证3。  
 
 同样有中值定理得到，▽f(x<sub>k</sub>) - ▽f(x<sup>\*</sup>) = ▽²f(x<sub>k</sub>+t(x<sub>k</sub>-x<sup>\*</sup>))(x<sub>k</sub>-x<sup>\*</sup>)，又由于牛顿法中，▽²f(x<sub>k</sub>)p<sub>k</sub> = -▽f(x<sub>k</sub>)，故▽²f<sub>k</sub>p<sub>k</sub>+▽f<sub>k</sub> = 0.  
 
 那么我们有\|\|▽f<sub>k+1</sub>\|\| = \|\|▽f<sub>k+1</sub> - ▽²f<sub>k</sub>p<sub>k</sub> - ▽f<sub>k</sub>\|\| =  
-\|\|▽f<sub>k+1</sub> - ▽f<sub>k</sub> - ▽²f<sub>k</sub>p<sub>k</sub>\|\| ≤  
-\|\|▽²f(x<sub>k</sub>+tp<sub>k</sub>)·(x<sub>k+1</sub> - x<sub>k</sub>) - ▽²f<sub>k</sub>p<sub>k</sub>\|\| =  
-\|\|(▽²f(x<sub>k</sub>+tp<sub>k</sub>)-▽²f<sub>k</sub>)p<sub>k</sub>\|\| ≤  
-L·\|\|tp<sub>k</sub>\|\|·\|\|p<sub>k</sub>\|\| ≤  
-L·\|\|p<sub>k</sub>\|\|² =  
-L·\|\|▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>\|\|² ≤  
-L·\|\|▽²f<sub>k</sub><sup>-1</sup>\|\|²\|\|▽f<sub>k</sub>²\|\| ≤  
-L·2·\|\|▽²f(x<sup>\*</sup><sup>-1</sup>)\|\|²\|\|▽f<sub>x</sub>\|\|²  
+\|\|▽f<sub>k+1</sub> - ▽f<sub>k</sub> - ▽²f<sub>k</sub>p<sub>k</sub>\|\| ≤  \|\|▽²f(x<sub>k</sub>+tp<sub>k</sub>)·(x<sub>k+1</sub> - x<sub>k</sub>) - ▽²f<sub>k</sub>p<sub>k</sub>\|\|  
+= \|\|(▽²f(x<sub>k</sub>+tp<sub>k</sub>)-▽²f<sub>k</sub>)p<sub>k</sub>\|\| ≤ L·\|\|tp<sub>k</sub>\|\|·\|\|p<sub>k</sub>\|\|  
+≤ L·\|\|p<sub>k</sub>\|\|² = L·\|\|▽²f<sub>k</sub><sup>-1</sup>▽f<sub>k</sub>\|\|²  
+≤ L·\|\|▽²f<sub>k</sub><sup>-1</sup>\|\|²\|\|▽f<sub>k</sub>²\|\| ≤ L·2·\|\|▽²f(x<sup>\*</sup><sup>-1</sup>)\|\|²\|\|▽f<sub>x</sub>\|\|²  
 
 前面部分为常数，故得证。  
 
