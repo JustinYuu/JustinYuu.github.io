@@ -105,7 +105,7 @@ f(x<sub>k</sub>+αp<sub>k</sub>) ≤ f(x<sub>k</sub>) + c<sub>k</sub>α<sub>k</s
 
 ##### 关于x<sub>k</sub>  
 
-设最优解为x<sup>\*</sup>，那么要使得x<sub>k</sub>→x<sup>\*</sup>，需要满足两阶充分条件，即▽f(x<sup>\*</sup>)=0，且▽²f(x<sup>\*</sup>)正定。  
+设最优解为x<sup>\*</sup>，那么要使得x<sub>k</sub>→x<sup>\*</sup>，需要满足一个两阶充分条件，即▽f(x<sup>\*</sup>)=0，且▽²f(x<sup>\*</sup>)正定。  
 
 ### 收敛性  
 
