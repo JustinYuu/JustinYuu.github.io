@@ -184,9 +184,8 @@ f<sub>k</sub> - f<sub>k+1</sub> ≥ c<sub>1</sub>(1-c<sub>2</sub>)/L * \|\|▽f<
 = \|▽²f<sub>k</sub><sup>-1</sup>\[▽²f<sub>k</sub>(x<sub>k</sub>-x<sup>\*</sup>) - (▽f<sub>k</sub>-▽f<sub>\*</sub>)]\|  
 ≤ \|\|▽²f<sub>k</sub><sup>-1</sup>\|\| · \|\|▽²f<sub>k</sub>(x<sub>k</sub>-x<sup>\*</sup>) - ▽²f(x<sub>k</sub>+t(x<sub>k</sub>-x<sup>*</sup>))(x<sub>k</sub>-x<sup>\*</sup>)\|\|, t∈(0, 1)  
 = \|\|▽²f<sub>k</sub><sup>-1</sup>\|\| · \|\|(▽²f<sub>k</sub> - ▽²f(x<sub>k</sub>+t(x<sub>k</sub> - x<sup>\*</sup>)))\|\| · \|\| x<sub>k</sub> - x<sup>\*</sup>\|\|  
-≤(Lipschitz) \|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|t(x<sub>k</sub>-x<sup>\*</sup>)\|\|·\|\|x-x<sup>\*</sup>\|\| ≤  
-\|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|²  
-≤ 2\|\|▽²f(x<sup>\*</sup>)<sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|²(x和x<sup>*</sup>足够接近)  
+≤(Lipschitz) \|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|t(x<sub>k</sub>-x<sup>\*</sup>)\|\|·\|\|x-x<sup>\*</sup>\|\|  
+≤ \|\|▽²f<sub>k</sub><sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|² ≤ 2\|\|▽²f(x<sup>\*</sup>)<sup>-1</sup>\|\|·L·\|\|x-x<sup>\*</sup>\|\|²(x和x<sup>*</sup>足够接近)  
 
 由于L前面的部分为常数，所以二次收敛证毕。又由于2成立，那么\|\|x<sub>k+1</sub>-x<sup>\*</sup>\|\|可收敛到0，故1也成立，下面证3。  
 
