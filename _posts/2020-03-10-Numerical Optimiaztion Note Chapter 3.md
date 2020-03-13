@@ -211,5 +211,29 @@ f<sub>k</sub> - f<sub>k+1</sub> ≥ c<sub>1</sub>(1-c<sub>2</sub>)/L * \|\|▽f<
 
 在实际的牛顿法迭代中，一般含有多个迭代过程，首先对k进行迭代，在这一轮迭代中，又要对α和λ进行迭代，那么对λ迭代的过程中，需要采用数值法的方式来快速的判定矩阵是否正定，这里一般采用矩阵Cholesky分解方式。  
 
+Cholesky分解需要通过一个定理完成：如果A是一个共轭正定阵，则A=LDL<sup>T</sup>，L为一个下三角阵，D为一个对角阵，且对角阵里的对角元素均大于0。下面举一个n=3的例子，未知数是矩阵L中的L<sub>21</sub>, L<sub>31</sub>, l<sub>32</sub>, 对角阵的d<sub>1</sub>, d<sub>2</sub>, d<sub>3</sub>，已知的是矩阵A中的值，那么有：  
+a<sub>11</sub>=d<sub>1</sub>, a<sub>21</sub> = l<sub>21</sub>d<sub>1</sub>, a<sub>31</sub> = l<sub>31</sub>d<sub>1</sub>  
+a<sub>22</sub> = d<sub>1</sub>l<sub>21</sub>l<sub>21</sub> + d<sub>2</sub>, a<sub>32</sub> = b<sub>1</sub>l<sub>31</sub>l<sub>31</sub> + d<sub>2</sub>l<sub>32</sub>  
+a<sub>33</sub> = d<sub>1</sub>l<sub>31</sub>l<sub>31</sub> + d<sub>2</sub>l<sub>32</sub>l<sub>32</sub> + d<sub>3</sub>  
+
+解得d<sub>1</sub> = a<sub>11</sub>, l<sub>21</sub> = a<sub>21</sub> / d<sub>1</sub>, l<sub>31</sub> = a<sub>31</sub> / d<sub>1</sub>, d<sub>2</sub> = a<sub>22</sub> - d<sub>1</sub>l<sub>21</sub>l<sub>21</sub>  
+l<sub>32</sub> = (a<sub>22</sub> - b<sub>1</sub>l<sub>31</sub>l<sub>31</sub>)/d<sub>2</sub>, d<sub>3</sub> = a<sub>33</sub> - d<sub>1</sub>l<sub>31</sub>l<sub>31</sub> - d<sub>2</sub>l<sub>32</sub>l<sub>32</sub>  
+从而完成对于共轭正定矩阵A的cholesky分解。  
+
+将n扩展到一般情况，那么整个cholesky分解的算法可写成以下形式：  
+
+for j = 1,2,...,n:  
+    d<sub>j</sub> = a<sub>jj</sub> - ∑d<sub>s</sub>l<sub>js</sub> (d<sub>j</sub>>0)  
+    for i = j+1, j+2, ...,n:  
+      l<sub>ij</sub> = (a<sub>ij</sub> - ∑d<sub>s</sub>l<sub>js</sub>l<sub>js</sub>) / d<sub>j</sub>  
+
+整体的流程非常简单，复杂度为O(n³)，虽然复杂度看起来很高，但是这种方法求得的数值解比一般的高斯消去法速度更快。  
+
+那么总结一下，对于改进的牛顿法的x<sub>k</sub>的一轮更新步骤，首先要计算▽f<sub>k</sub>，▽²f<sub>k</sub>，对于τ = τ<sub>1</sub>, τ<sub>2</sub>,... , 进行▽²f<sub>k</sub>+τI的cholesky分解，直到正定。接下来将▽²f<sub>k</sub>+τI看做L<sup>T</sup>DL，解L<sup>T</sup>DLp<sub>k</sub> = -▽f<sub>k</sub>， 解得p<sub>k</sub>，搜索α<sub>k</sub>步长，满足Wolfe条件，得到α<sub>k</sub>，最后可以得到x<sub>k+1</sub> = x<sub>k</sub> + α<sub>k</sub>p<sub>k</sub>。  
+
+## 总结  
+
+这一章终于学习完毕了，内容是真的多，课后练习会等我做完之后再开一篇传上来。吴教授已经提前给我做了心理准备，第四章会更难的:)  
+
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
