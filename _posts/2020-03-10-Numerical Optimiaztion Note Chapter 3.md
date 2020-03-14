@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Numerical Optimization Note Chapter 2"
+title: "Numerical Optimization Note Chapter 3"
 description: "Note of Numerical Optimization"
 categories: [Numerical Optimization]
 tags: [Math]
@@ -8,7 +8,7 @@ redirect_from:
   - /2020/03/10/
 ---
 
-# Numerical Optimization Exercise Chapter 2  
+# Numerical Optimization Note Chapter 3  
 
 ## Introduction  
 
@@ -233,7 +233,7 @@ for j = 1,2,...,n:
 
 ## 总结  
 
-这一章终于学习完毕了，内容是真的多，课后练习会等我做完之后再开一篇传上来。吴教授已经提前给我做了心理准备，第四章会更难的:)  
+这一章终于学习完毕了，内容是真的多，不过吴教授已经提前给我做了心理准备，第四章会更难的:)  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
