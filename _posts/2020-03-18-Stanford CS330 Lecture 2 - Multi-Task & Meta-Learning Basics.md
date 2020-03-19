@@ -43,7 +43,27 @@ redirect_from:
 
 此外当今还有一些挑战。首要的挑战叫做negative transfer，有些时候独立的网络可能会表现的更好，这种现象的原因是有些任务的数据可能会损害另一些任务的表现。这里举了一个Multi-task CIFAR100上的例子，作者测试了一下当前multi-task的STOA方法，结果发现独立的网络比这些方法用起来结果更好。这种原因是多方面的，可能是由于优化的问题，比如不同任务的梯度之间的影响，或者不同任务之间的学习速度不同；也可能是由于表示容量的限制，multi-task由于要学习一些更多的表示，所以网络一般比单任务网络需要大一些，否则容易欠拟合。这里有学生提出了我也产生了的疑惑，那就是你一个网络来解决十个任务，比十个网络解决十个任务表现差，难道不是正常的吗，这难道不是因为更省事更方便才使用multi-task的吗？Finn的回答是可能十个网络解决十个任务，那么数据集规模就不够了，所以才需要用multi-task来从别的任务的数据集中学习一些可能与自己的任务有关的信息。所以multi-task严格上来讲效果应该比single-task要好的，因为数据集扩充了若干倍。那么学生继续问了，如果数据集完全相同，只是标签可能根据任务的不同有所不同的情况下，是不是multi-task就没啥作用了？毕竟之前看出的作用就只局限在数据共享上，这里Finn的看法是multi-task还是有效的，因为共享数据并不是简单的共享输入，而是共享监督方法，因为不同任务的监督方法可能不同，即使同样的数据学到的信息还是会有所不同。此外还有学生提问，大网络究竟比小网络好在哪里？这里除了优化的时候可能会压力更小之外，大的网络可以同时学到更多的任务表示，因为multi-task的多个task都需要学习自己的表示，并且这是并行的而不是串行的，所以就需要更为强大的表示学习能力，这体现在网络的规模大小上。回到negative transfer上来，Finn认为遇到这种问题最好是在任务之间共享更少的参数，毕竟这并不是一个二元的决定，你可以自己决定共享多少信息。  
 
+还有一个挑战叫做Overfitting，过拟合可能发生在某些任务中，这是由于信息可能分享的不够多所致，分享更多的信息会起到过拟合的作用。  
 
+### Case Study of real-world multi-task learning  
+
+Finn进而举了一个例子，是YouTube的推荐算法，其算法的目标是为YouTube提供用户视频的推荐。那么可选的目标有很多种，比如用户打分很高的视频，用户分享的视频，或者用户喜欢看的视频。此外还有一些隐藏的因素，比如用户是否已经看过了，这被Finn称作feedback loop。那么对于这个案例，框架的输入就是用户的特征和当前正在看的video，然后要通过模型生成一系列候选视频，然后再对视频排序，最后将最顶部的视频推荐给用户。那么显然重点在于候选视频的选择以及ranking。这里作者的想法是把大量的有关联的视频作为候选视频，然后将模型的处理重点放在ranking上面，ranking需要考虑engagement和satisfaction本身，engagement参与度包括用户是否点击过这些视频，花了多少时间在这些视频上，前者是一个二元分类问题，后者是一个回归问题。satisfaction即为满意度，比如用户是否点击了like按钮，或者用户的评分，前者是一个二元分类问题，后者是一个评分。那么将engagement和satisfaction合在一起综合考虑，就是最后的ranking score，这里可以使用手动设置的加权相加。  
+
+Finn认为该例子网络的架构可以使用Shared-Bottom Model，即一个Multi-head架构，不过这种方法可能在任务之间的相关程度很低的时候有负面的影响。因此在实际情况中，一般都会使用一些替代信息，比如MMoE，即Multi-gate Mixture-of-Experts，该模型允许网络的不同部分可以specialize专家神经网络f<sub>i</sub>x，使用一个函数g(x)来决定哪一个input是要使用的，然后再使用选择的专家来计算特征。  
+
+在实验部分，训练一般按照时序进行，在TPU和Tensorflow上进行训练，使用AUC和均方根误差来进行性能评价。  
+
+## Meta-Learning  
+
+接下来进行元学习的部分，这里主要学习三方面，problem formulation, general recipe of meta-learning algorithms, Black-box adaptation approaches。  
+
+### Problem Formulation  
+
+有两种观点看待meta-learning，一种是mechanistic view，一种是probabilistic view。mechanistic观点认为深度神经网络模型可以读取整个数据集，并在新的数据点上进行预测。训练这种网络需要使用元数据集，其中包含了多种任务的子数据集。这种观点能够使得元学习算法的实现更简单。probabilistic观点认为从一系列任务中提取先验信息可以使得新任务的学习更有效。使用先验的训练集去推断最为可能的后续参数的形式，从而学习一个新的任务，这种观点会使得元学习算法更容易被理解。  
+
+对于元学习的数据集，一般认为会有两部分，D={(x<sub>1</sub>, y<sub>1</sub>),...,(x<sub>k</sub>,y<sub>k</sub>)}, D<sub>meta-train</sub> = {D<sub>1</sub>,...,D<sub>n</sub>}，那么元学习的过程可以写为argmaxlogp(φ\|D,D<sub>meta-train</sub>)。但是这也会有一些问题，比如我们不想永远把元训练数据集放在身边，这样会导致数据集规模太过庞大，这时候我们可以学习一个meta-parameters θ:p(θ\|D<sub>meta-train</sub>), 这一参数就表示需要从元数据集中学习到的用于解决新问题的知识，那么之前的logp(φ\|D,D<sub>meta-train</sub>)就可以写成log∫<sub>θ</sub>p(φ\|D, θ)p(θ\|D<sub>meta-train</sub>)dθ ≈ logp(φ\|D, θ<sup>\*</sup>) + logp(θ<sup>\*</sup>\|D<sub>meta-train</sub>), 其中θ<sup>\*</sup> = arg maxlogp(θ\|D<sub>meta-train</sub>)，对于θ<sup>\*</sup>的求解，是我们真正要处理的元学习任务。  
+
+ 
 
 
 ---
