@@ -63,8 +63,11 @@ Finn认为该例子网络的架构可以使用Shared-Bottom Model，即一个Mul
 
 对于元学习的数据集，一般认为会有两部分，D={(x<sub>1</sub>, y<sub>1</sub>),...,(x<sub>k</sub>,y<sub>k</sub>)}, D<sub>meta-train</sub> = {D<sub>1</sub>,...,D<sub>n</sub>}，那么元学习的过程可以写为argmaxlogp(φ\|D,D<sub>meta-train</sub>)。但是这也会有一些问题，比如我们不想永远把元训练数据集放在身边，这样会导致数据集规模太过庞大，这时候我们可以学习一个meta-parameters θ:p(θ\|D<sub>meta-train</sub>), 这一参数就表示需要从元数据集中学习到的用于解决新问题的知识，那么之前的logp(φ\|D,D<sub>meta-train</sub>)就可以写成log∫<sub>θ</sub>p(φ\|D, θ)p(θ\|D<sub>meta-train</sub>)dθ ≈ logp(φ\|D, θ<sup>\*</sup>) + logp(θ<sup>\*</sup>\|D<sub>meta-train</sub>), 其中θ<sup>\*</sup> = arg maxlogp(θ\|D<sub>meta-train</sub>)，对于θ<sup>\*</sup>的求解，是我们真正要处理的元学习任务。  
 
- 
+那么最后对于元学习的定义如下：θ<sup>\*</sup> = max∑<sub>i=1</sub><sup>n</sup>logp(φ<sub>i</sub>\|D<sub>i</sub><sup>ts</sup>)，这里φ<sub>i</sub> = f<sub>θ</sub>(D<sub>i</sub><sup>tr</sup>)。而对于multi-task的定义则有所不同，只需要找到能够有效的解决meta-dataset中的任务的θ<sup>\*</sup>即可，不需要解决新的未知任务，也就是说φ<sub>i</sub>=θ。  
 
+此外对于超参数优化和autoML，元学习也可以派上用场。对于超参数优化而言，θ是超参数，φ是网络的权重。对于网络架构搜索而言，θ是架构，φ是网络的权重，总之都是试图通过已经学习到的知识φ来求解新的知识θ。  
+
+这里meta-learning只讲了一部分，后面的两部分由于时间原因，留到下节课再讲。  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
