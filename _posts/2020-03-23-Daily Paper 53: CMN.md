@@ -35,9 +35,34 @@ redirect_from:
 ### Multi-saliency Embedding Function  
 
 整体的embedding model流程图见下图:  
-[53-2](/images/daily paper/53-2.png)  
+![53-2](/images/daily paper/53-2.png)  
 
+这一步主要是将视频转化为同等大小的embedding，只不过这里将隐藏的显著性也考虑在内。作者使用的函数叫做multi-saliency embedding funuction(MEF)，这里所添加的显著性用隐藏的变量H表示，内含有m个元素，每个元素都代表一个显著性。对于每一个输入p<sub>i</sub>，都会计算一个关于h<sub>j</sub>的权重a<sub>ij</sub>，用来衡量该显著性和元素的关联，那么这就是一个m×n的矩阵，m代表考虑的显著性的数量，n代表输入的帧数。那么hidden descriptor q<sub>j</sub>就是P和h<sub>j</sub>之间的残差的加权和，整体的公式见下图:  
+[53-4](/images/daily paper/53-4.png)  
 
+这看起来其实和TARN的很像，类似一个注意力模型。TARN的那篇用来进行query和sample片段之间的距离比较，这个用来进行显著性和帧的比较。  
+
+### Compound Memory Structure  
+
+CMN结构图见下图：  
+![53-3](/images/daily paper/53-3.png)  
+
+经过前一个模块将视频映射到一个矩阵表示后，这一表示被向量化和均一化成为一个query vector，然后在抽象记忆上进行最邻近算法，最为接近的memory slot被检索到，然后储存在该value memory的标签被用作预测。由于是一个二层模型，构成键记忆模块包含了输入的矩阵表示，而抽象记忆模块又建立在堆叠的构成键之上。  
+
+这里记忆网络暂时不是我的研究重点，而且已经被其他方法所超过，所以就不太详细的解读了，下图是CMN的更新规则，和之前的还是有点不同的。  
+![53-5](/images/daily paper/53-5.png)  
+
+## Experiment  
+
+由于当时没有小样本动作识别数据集，所以作者自己建了一个，从Kinetics数据集中取了100个类别的10000个视频，分成了64,12,24的训练、验证和测试集。  
+
+提取特征使用的是ResNet-50，其他训练细节就略过了。  
+
+作者进行了5-way 1/2/3/4/5-shot的实验，均达到了STOA的表现。其他的消融实验结果就略过了，需要的话可以查阅原论文。  
+
+## Conclusion  
+
+作者主要提出了一个叫做compound memory network的东西，用于小样本的视频分类。该模型最大的特色是用matrix作为特征表示，使用memory-based的思想处理提取的特征表示，将显著性作为考量的因素，得到了不错的效果。这篇paper的创新点还是很多的，实验也做的很充分，的确是一篇好文章。不过memory network的表现已经逐渐被deep nerual metric等metric-based方法超越，要在这一方法上做出东西还是要有足够强大的改进才行。  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
