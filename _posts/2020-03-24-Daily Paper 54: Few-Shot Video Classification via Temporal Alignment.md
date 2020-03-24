@@ -22,6 +22,20 @@ redirect_from:
 
 ## Method  
 
+整体的流程图如下图所示:  
+![54-1](/images/daily paper/54-1.png)  
+整个流程由两个部分组成，embedding module和relation module。  
+
+### Embedding module  
+
+embedding module不仅要完成提取特征的任务，还要保证提取的特征能够对齐。事实上，一个视频有若干个帧，但是很多帧的信息都是冗余的，所以作者提前进行了一个预筛选，使用Temporal Segment Network的稀疏采样模式，将视频序列分为T个片段，然后从每一个片段里提取一小个片段，也就是说视频的所有信息都能被捕获，但是离散采样可以保证数量的相同和帧冗余现象的缓解。  
+
+预采样之后，对于每一个片段，都使用一个CNN网络f<sub>ψ</sub>来进行编码，假设输入序列S中有T个片段，那么最后的特征向量也有T个，那么整个特征就是T×D<sub>f</sub>。我之前也说过，这一步并不是难题，最关键和困难的是如何进行矩阵之间的比较，我觉得这需要比较强的数学知识。  
+
+### Distance Measure with TAM  
+
+
+
 
 
 ---
