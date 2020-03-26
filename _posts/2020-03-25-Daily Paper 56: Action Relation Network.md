@@ -69,7 +69,7 @@ redirect_from:
 
 作者在HMDB511, miniMIT, UCF101三个数据集上进行了小样本采样和测试，在HMDB51上rotation自监督取得了1-shot的最好表现，在5-shot上spatial-jigsaw取得了最好表现，在miniMIT上temporal-jigsaw取得了1/5-shot的最佳表现，在UCF101上rotation取得了1/5-shot的最佳表现。  
 
-整体看来准确率还是挺高的，但是我感觉baseline偏弱，只选了3D卷积的ProtoNet, Relation Networks和SoSN(second-order similarity network for few-shot learning, WACV2019)，所以我觉得起不太到真正比较的效果，虽然超过了所有的baseline，也不能算是STOA。  
+整体看来准确率还是挺高的，但是我感觉baseline偏弱，只选了3D卷积的ProtoNet, Relation Networks和SoSN(Power Normalizing second-order similarity network for few-shot learning, WACV2019)，所以我觉得起不太到真正比较的效果，虽然超过了所有的baseline，也不能算是STOA。  
 
 ## Conclusion  
 
