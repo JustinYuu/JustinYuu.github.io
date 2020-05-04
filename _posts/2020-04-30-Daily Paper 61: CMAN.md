@@ -34,6 +34,7 @@ redirect_from:
 而s<sub>t</sub>由下列公式计算得到：  
 ![61-3](/images/daily paper/61-3.png)  
 
+
 基于sentinel vector，作者提出了一个adaptive co-attention模块，用来计算新的语义向量，具体方式如下图:  
 ![61-4](/images/daily paper/61-4.png)  
 
