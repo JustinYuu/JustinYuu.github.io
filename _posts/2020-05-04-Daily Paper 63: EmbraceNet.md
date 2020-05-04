@@ -36,11 +36,50 @@ redirect_from:
 
 ## Method  
 
+下图是整体的流程图:  
+![63-1](/images/daily paper/63-1.png)  
 
+由上图可以看出，整体的模型由docking layers和embracement layeyr构成，docking layer的数量和参与的模态数量相同，首先通过一个仿射变换处理各个模态的表示x生成z，然后经过一个网络的处理得到d。之后进入embracement layer，首先经过一个变换r得到d'，然后concatenate起来得到最终的向量e，最终的向量e的维度和每一个d都是一样的，然后再通过最后的terminal network得到final decision。  
 
+下面依次介绍两个layer。首先是docking layers，之前提到过EmbraceNet是一个嵌入式的网络模块，它将之前处理不同模态信息的网络的输出作为输入，那么既然可以处理任意形式的输入，第一步就是要把这些混乱的输入整合成为相同的形式，即作者所说的dockable vector。整个docking layers的操作过程其实非常简单，就是进行一个线性变换，然后经过一个非线性层就可以了。
 
+然后是embracement layer。假设一共从docking layers中得到了m个向量，每一个向量含有c个值，那么embracement layer的作用就是将这m个c×1的向量处理为1个c×1的向量，作者将其称为embraced vector。最为简单的操作方式就是逐元素相加，但是这对于部分缺失的数据来说过于致命，所以作者应用了一个基于多项式采样的elaborate fusion技术，也就是图上的操作r。  
 
+定义r<sub>i</sub> = \[r<sub>i</sub><sup>(1)</sup>,  r<sub>i</sub><sup>(2)</sup>, ..., r<sub>i</sub><sup>(m)</sup>]<sup>T</sup> (i=1,2,...,c)是一个来自于多项式分布的向量，即 r<sub>i</sub> ~ Multinomial(1, p)。其中p=\[p<sub>i</sub><sup>(1)</sup>,  p<sub>i</sub><sup>(2)</sup>, ..., p<sub>i</sub><sup>(m)</sup>]<sup>T</sup>, ∑<sub>k</sub>p<sub>k</sub> = 1。这一分布保证只有一个r<sub>i</sub>的元素是等于1的，其他的值都等于0.接下来向量r<sup>(k)</sup> = \[\[r<sub>1</sub><sup>(k)</sup>,  r<sub>2</sub><sup>(k)</sup>, ..., r<sub>c</sub><sup>(k)</sup>]<sup>T</sup>]就被应用到向量d<sup>k</sup>上，即有d'<sup>(k)</sup> = r<sup>(k)</sup>○d<sup>(k)</sup>。其中○代表Hadamard乘积，也就是逐元素相乘。  
 
+最后embracement层的第i个输出向量的组成元素e = \[e1,e2,...,e<sub>c</sub>]<sup>T</sup>就通过下列公式获得:  
+![63-2](/images/dailya paper/63-2.png)  
+
+向量e作为terminal network的输出，然后该网络输出最后的预测结果，作为给定的分类任务的结果。之前的过程保证了只有一个模态数据可以对embraced vector的每一个元素起到作用，这其实是一种模态的选择，在每一个e的组成元素中都独立的进行一遍。那么最后的embracement layer的输出就可以通过所有模态的所有数据中获得，因此多模态信息最终得以整合。整个模态的选择过程由p决定，一般来说p=\[1/m, 1/m, ..., 1/m]<sup>T</sup>能够等概率的选取任一模态，但是在训练的过程中可以动态的进行微调，从而获得更好的表现。  
+
+## Benefits  
+
+作者专门开了一个part来介绍该网络架构的优点。简单来说优点可以分为三点：考虑到模态之间的关联性、处理丢失的数据，以及起到正则化的作用。  
+
+模态见的关联性不用过多解释，因为embracement layer的过程就是各个模态的信息整合起来的。而对于丢失信息的处理，EmbraceNet可以通过调整概率p来实现。定义向量u为当前模态是否存在的布尔数组，当该模态的信息存在的时候值为1，否则值为0，那么对于多项式分布s，可以通过下列公式来调整p:  
+![63-3](/images/daily paper/63-3.png)  
+
+说白了，就是当当前模态的信息丢失的话，就把选中当前模态的数据作为最后fusion向量数据的概率调整成0，这就保证了不存在的数据永远也不可能成为最终的数据。  
+
+最后是正则化。作者认为这种选择模态的方式满足二项式分布，由因为任选一个元素的二项式分布等同于伯努利分布，因此该操作等同于正则化。  
+
+## Experiment  
+
+作者将该模型和其他fusion方式进行比较，在gas sensor arrays dataset的图示如下图所示：  
+![63-4](/images/daily paper/63-4.png)  
+
+在OPPOTUNITY dataset的图示如下图所示:  
+![63-5](/images/daily paper/63-5.png)  
+
+在两个数据集的结果如下图:  
+![63-6](/images/daily paper/63-6.png)  
+![63-7](/images/daily paper/63-7.png)  
+
+作者还做了相当多的实验，包括调参实验，消融实验等等，这里就不一一介绍了。  
+
+## Conclusion  
+
+作者提出了一个新的用于多模态信息融合的深度学习架构EmbraceNet，该架构对于实战中数据缺失的情况非常鲁棒。这篇文章的想法我认为并不复杂，我原以为是使用深度学习的网络来学习融合方法本身，结果是使用单层神经网络来处理不同模态的特征，然后重点训练何时取何者模态。我感觉现在的注意力机制能够达到比这种算法更为优秀的效果，可能是因为该算法在实战中效果比较好吧。  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
