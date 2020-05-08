@@ -2,7 +2,7 @@
 layout: post
 title: "Numerical Optimization Note Chapter 3"
 description: "Note of Numerical Optimization"
-categories: [Numerical Optimization]
+categories: [Numerical-Optimization]
 tags: [Math]
 redirect_from:
   - /2020/03/10/
