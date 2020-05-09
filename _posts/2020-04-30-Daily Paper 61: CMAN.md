@@ -12,7 +12,7 @@ redirect_from:
 
 ## Introduction  
 
-这篇是南京理工大学发表在AAAI2020上的一篇audio-visual event localization上的文章，其主要改进是换了一个attention，使算法能够有效的在两个模态时序不对应的情况下达到event localization的STOA表现。  
+这篇是南京理工大学发表在AAAI2020上的一篇audio-visual event localization上的文章，其主要改进是换了一个attention，使算法能够有效的在两个模态时序不对应的情况下达到event localization的SOTA表现。  
 
 作者使用了seq2seq的方式，使用三个不同的注意力机制来挖掘event发生的位置、时间和模态，然后更注意这些关键位置的信息。换言之，作者提出的算法可以剔除与事件无关的信息，利用最为有效的信息来进行定位。作者将该模型在SEL,WSEL和CML三个任务上进行了测试，均取得了很好的表现。  
 
