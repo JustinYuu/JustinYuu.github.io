@@ -5,7 +5,7 @@ description: "Notes"
 categories: [CV-Meta]
 tags: [Paper]
 redirect_from:
-  - /2020/05/07/
+  - /2020/05/08/
 ---
 
 # Daily Paper 67: TAEN: Temporal Aware Embedding Network for Few-Shot Action Recognition  
