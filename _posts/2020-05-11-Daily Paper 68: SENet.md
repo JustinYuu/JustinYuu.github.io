@@ -5,7 +5,7 @@ description: "Notes"
 categories: [CV-classic]
 tags: [Paper]
 redirect_from:
-  - /2020/05/08/
+  - /2020/05/11/
 ---
 
 # Daily Paper 68: Squeeze-and-Excitation Networks  
