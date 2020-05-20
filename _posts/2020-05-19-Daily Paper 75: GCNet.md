@@ -43,11 +43,33 @@ redirect_from:
 那么操作后的图示如下图的b所示:  
 ![75-4](/images/daily paper/75-4.png)  
 
+从上图的图b可以看出，简化版本的NLblock可以被抽象成三个步骤：全局注意力池化(通过一个1×1的卷积Wk和softmax函数来获得注意力权重，然后进行注意力池化，从而得到全局的语义特征)，通过1×1卷积Wv得到的特征转换，以及特征整合(使用加法融合法)，作者将这三步用一个公式来表示:  
 
+![75-6](/images/daily paper/75-6.png)  
 
+括号最里面的部分代表语义建模模块，δ函数代表特征转换，F代表fusion函数。  
 
+有趣的是，SE-Net中重要的SE block和简化版本的NL block极为相似，从上面的图c中可以看出，SE block由一个GAP层、一个bottleneck转换层和一个rescaling函数作为fusion模块组成。那么作者就把SE block和NL block结合了一下，提出了一个新的全局语义建模框架GC block，也就是上图的d部分。  
 
+作者认为GC block能够同时获得NL block的长距离依赖性和SE block的低计算复杂度。具体方式是使用bottleneck的transform模块来代替1×1卷积。由于bottleneck有两层，所以提升了优化和训练的难度，所以作者在bottleneck的两层中间，ReLU之前加了一个layer normalization层，起到正则化的作用，方便优化。  
 
+GC block的整个运算过程可用下列公式表示：  
+![75-7](/images/daily paper/75-7.png)  
+
+## Experiment  
+
+作者在COCO上的目标检测/分割、ImageNet上的图像分类和Kinetics上的动作识别三个任务上进行了性能测试，在目标检测/分割上的表现如下图：  
+![75-8](/images/daily paper/75-8.png)  
+
+在图像分类上的表现如下图:  
+![75-9](/images/daily paper/75-9.png)  
+
+在动作识别上的表现如下图:  
+![75-10](/images/daily paper/75-10.png)  
+
+## Conclusion  
+
+总结一下，这篇paper是SE-Net和NL-Net的结合体。这篇文章的本意是对Non-local network进行复杂度降维，然后结合了SE-Net上的一些trick，构成了一个新的结合模型GCNet。我觉得这篇文章的创新度做的一般，但是解决的问题比较有意义，也算是一篇不错的文章吧。  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
