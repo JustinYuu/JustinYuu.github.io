@@ -8,7 +8,7 @@ redirect_from:
   - /2019/01/07/
 ---
 
-This poem is my favourite poem written by Dylan Thomas,which reminds me that never feel fulfilled when having accomplished something and never feel frustrated when encoutering failure.
+This poem is my favourite poem written by Dylan Thomas,which reminds me that never feel fulfilled when having accomplished something or frustrated when encoutering failure.
 
 Do not go gentle into that good night
 
