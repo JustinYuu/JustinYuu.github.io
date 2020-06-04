@@ -1,0 +1,25 @@
+---
+layout: post
+title: "Daily Paper 77: Attention-CNN"
+description: "Notes"
+categories: [CV-Attention]
+tags: [Paper]
+redirect_from:
+  - /2020/06/04/
+---
+
+# Daily Paper 77: On the relationship betweeen self-attention and convolutional layers  
+
+## Introduction  
+  
+今天的这篇是带制作，是EPFL的Jaggi组发在ICLR2020上的。这篇文章最大的贡献是探究了自注意力机制和卷积层之间的关系，并尝试使用自注意力机制来代替卷积层。19年Ramachandran的Stand-alone self-attention in vision models一文已经证明了自注意力能够完全替代卷积层，并能在视觉任务上实现SOTA的表现。此外之前看的CVPR2020的SANet，也使用了完全基于自注意力的网络来实现了多个CV任务上的SOTA，那么这就引发一个问题，注意力层和卷积层的操作是否是一样的呢？作者的这篇paper就证明了，注意力层能够实现卷积操作，并且事实上经常在实践中学习这么做。特别的，作者还证明了一个有足够多的头的多头注意力机制能够达到任何卷积层的表现效果。作者的数值实验也证明了自注意力层对于像素网格模式的处理也和CNN层类似，这也证实了作者的观点。  
+
+一切的一切还要追溯到Transformer上，在基于transformer/multihead attention的众多模型，比如BERT，GPT-2等等血洗了NLP和语音识别的榜单之后，众多学者又将眼光投向了CV领域。而之所以Transformer能移植到CNN上去，还要多亏了注意力机制。注意力机制的目的是为了获得长距离的依赖性，而这里采用的是注意力机制中的自注意力机制，也就是使用注意力分数来衡量一个序列中任意两个词语的关系，从而基于这些词语中的注意力权重值的高低来进行每个单词表示的更新。那么注意力机制最初应用到计算机视觉领域，还要追溯到SE-Net的channel-based attention和何凯明的Non-local Network，这些之前也都介绍过了，通过attention，来探究channel维度上和空间维度上的权重关系，也算是强行把序列间的关系转移到了CNN架构内部中。那么到这里，attention的本意还是为了提高CNN网络的表现，换言之attention只是起到了CNN架构的辅助作用，那么谷歌大脑的Ramachandran在2019年发表了一篇非常重要的文章，创造性的将自注意力代替了CNN，成为了网络的骨架部分，这篇文章接下来也会详细的介绍一下。前几天读过的SANet也是类似的文章，使用自注意力模块来实现了CNN的特征整合和特征转换两部分。  
+
+那么既然有了用自注意力机制来代替CNN的成功案例，作者就在想，自注意力机制是真的按照CNN的做法去做的呢，还是使用另外一种新的方法来实现，只是恰好有了很好的表现而已的呢？这里要提一下SANet和这篇paper几乎是同时期的，也就是说作者探究的是基于Ramachandran这篇文章。SANet已经读过了，是完全模仿CNN的作用，而这里作者要探究的是Ramachandran的自注意力机制究竟是模仿CNN还是另有方式。从理论的角度上来看，transformer其实有能力去模仿任何函数，包括CNN，毕竟CNN的卷积本身也是一个函数。事实上，Perez等人在2019年已经证明了带有positional encoding的注意力架构在一些强理论假设下是图灵完备的，那么既然都图灵完备了，一个小小的卷积操作当然不在话下。但是该研究并没有明确的揭露到底是如何实现的，只是证明了能够实现，那么作者的motivation也就出来了，即找到自注意力机制到底是如何实现卷积操作的。  
+
+作者的contribution有二，从理论和实验两方面证明了自注意力机制可以并且确实做了和卷积层操作类似的事。从理论层面，作者提出了一个有建设性的证据，证明了自注意力层可以表达任何卷积层能表达的特征，并证明了单个多头注意力机制加上positional encoding可以通过重参数化以表达任意卷积层所表达的特征。从实验层面，作者证明了Ramachandran的文章的确在每一个query像素上学习了网格化的特征，这也和卷积操作的实质类似。  
+
+
+---
+本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
