@@ -51,7 +51,59 @@ redirect_from:
 
 最后是1维卷积的情况，定理1可以直接延伸到1维卷积的情况下，卷积层K=N<sub>h</sub>，输出维度是min(D<sub>h</sub>,D<sub>out</sub>),使用D<sub>p</sub>≥2的位置编码。不过作者并没有做实验来证明1维的自注意力机制表现是不是和1维卷积表现相同，只是从理论层面上证明了可行性。  
 
+## Proof of Main Theorem  
 
+最后是整篇文章的重点，即对定理1的证明。定理1的证明分为两个引理，也就是上面提到的引理1和引理2.  
+
+### Lemma 1  
+
+引理1：一个多头自注意力层有N<sub>h</sub> = K²个头，D<sub>h</sub>≥D<sub>out</sub>，定义f:\[N<sub>h</sub>] → △<sub>K</sub>为一个头到偏移量的双射映射。那么，假设对于每一个head，都有下述公式:  
+![77-6](/images/daily paper/77-6.png)  
+
+那么对于任意卷积核尺寸为K×K，输出通道维度为D<sub>out</sub>的卷积层，都存在{W<sub>val</sub><sup>(h)</sup>}<sub>h∈\[N<sub>h</sub>]</sub>，使得对于每一个X都有MHSA(X) = Conv(X)。  
+
+引理证明：我们知道多头自注意力的公式如下:  
+![77-7](/images/daily paper/77-7.png)  
+
+每一个头的V矩阵W<sub>val</sub><sup>(h)</sup>和每一个块的投影矩阵W<sub>out</sub>(D<sub>h</sub>×D<sub>out</sub>)是学习得到的，假设D<sub>h</sub>≥D<sub>out</sub>，那么我们可以把每一个头的两个矩阵换成可学习的矩阵W<sup>(h)</sup>，那么对于某一个特定的多头自注意力的输入像素q来说，公式就变成了下面的样子：  
+![77-8](/images/daily paper/77-8.png)  
+
+由于引理的限制，对于第h个注意力头，当k=q-f(h)的时候注意力概率是1，否则是0，那么对于像素q的注意力层输出来说，公式就又成了下面的样子:  
+![77-9](/images/daily paper/77-9.png)  
+
+当K=√N<sub>h</sub>时，上述公式可以等同于卷积操作。  
+
+一般来说，在基于transformer的应用中，D<sub>h</sub> = D<sub>out</sub>/N<sub>h</sub>，因此D<sub>h</sub><D<sub>out</sub>，那么W<sup>(h)</sup>可以看成是秩为D<sub>out</sub>-D<sub>h</sub>的矩阵，这不足以表达具有D<sub>out</sub>个channel的卷积层。不过，虽然秩小于D<sub>out</sub>，但是MHSA(X)的输出仍然是D<sub>out</sub>维度的，从这里边选出任意D<sub>h</sub>个输出，能够表达出任意具有D<sub>h</sub>个channel的卷积层输出，所以作者给定理1加了一个约束条件，即卷积层的输出channel应该是min(D<sub>h</sub>, D<sub>out</sub>)。在实际操作中，作者建议把多个D<sub>h</sub>的头concat成为D<sub>out</sub>，而不是把D<sub>out</sub>维度的输出split为多个head，这样可以精确的重参数化，避免产生无用的channel。  
+
+### Lemma 2  
+
+引理1证明了卷积操作是可以用多头自注意力等价的，引理2证明了存在一个相对编码方案{r<sub>δ</sub>∈R<sup>D<sub>p</sub></sup>}<sub>δ∈Z²</sub>，其中D<sub>p</sub>≥3，该方案包含参数矩阵W<sub>qry</sub>, W<sub>key</sub>, W^<sub>key</sub>，u，同时D<sub>p</sub>≤D<sub>k</sub>，使得对于每一个△∈△<sub>k</sub>，都存在一些在△上约束的向量v，使得如果k-q=△，softmax(A<sub>q,:</sub>)<sub>k</sub>=1，否则等于0.  
+
+引理2证明：  
+
+作者通过举例来证明D<sub>p</sub>=3的时候，相对编码方案满足要求的注意力概率。由于注意力概率对于输入的张量X是独立的，所以设置W<sub>key</sub>和W<sub>qry</sub>的初始值为0，那么上面相对位置编码公式就只剩了最后一项了，那么把W^<sub>key</sub>(D<sub>k</sub>×D<sub>p</sub>)设为单位矩阵（进行行填充），使得A<sub>q,k</sub> = v<sup>T</sup>r<sub>δ</sub>, δ:=k-q。此外上面提到作者假设D<sub>p</sub>≤D<sub>k</sub>，所以没有来自r<sub>δ</sub>的信息丢失掉。然后我们假设有下列公式成立:  
+
+![77-10](/images/daily paper/77-10.png)  
+
+c是常数，在上面的公式中，A<sub>q,:</sub>最大的注意力分数是-αc，此事位置达到了A<sub>q,k</sub>，此时δ=△。另一方面，系数α可以用来任意比例的缩放A<sub>q,△</sub>和其他注意力分数之间的区别。  
+
+那么对于δ=△，我们有以下公式:  
+![77-11](/images/daily paper/77-11.png)  
+
+对于δ≠△，lim<sub>α→∞</sub>softmax(A<sub>q,:</sub>)<sub>k</sub>=0，因此满足引理2的要求。  
+
+此外还需要证明的是存在v和{r<sub>δ</sub>}<sub>δ∈Z²</sub>使得上述假设公式真的成立。把假设公式的右边展开，得到  
+![77-12](/images/daily paper/77-12.png)  
+
+那么如果我们把v和r设成  
+![77-13](/images/daily paper/77-13.png)  
+
+我们就会得到  
+![77-14](/images/daily paper/77-14.png)  
+
+那么当c=-\|\|△\|\|²时，条件满足，因此论证完毕。  
+
+此外，对于任意像素点的准确表示要求α，或者Wq和Wk能够达到任意大，同时当α增加的时候，其他像素的注意力权重指数级收敛为0。但是在实际操作中，一般依靠有限精度算法，找到一个能够满足实验所需的常数α即可，比如最小的正float32标量是10e-45，那么把α设成46就足够获得hard attention了。  
 
 
 ---
