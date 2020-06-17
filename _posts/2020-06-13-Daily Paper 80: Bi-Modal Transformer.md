@@ -30,10 +30,10 @@ Dense video captioning我认为是比audio-visual event localization更为复杂
 Captioning Module的流程如下：首先使用双模态encoder来处理音频A和视频V特征序列，得到两个输出序列：audio-attended visual features和visual-attended audio features。接下来使用双模态decoder来处理这些features，双模态decoder将之前产生的caption word序列和这两个features作为输入，得到一个decoder输出，最终的decoder输出一个接下来caption words的词汇表概率分布，从而得到最有可能符合的下一个caption wordks。  
 
 首先看下双模态encoder，encoder使用Self-Attention+Cross-Modal Attention+双层FC的架构，注意力使用multihead attention，具体方式如下图:  
-[80-2](/images/daily paper/80-2.png)  
+![80-2](/images/daily paper/80-2.png)  
 
 其次看双模态decoder，decoder和transformer略有不同，分为四部分：self-attention, bi-modal encoder-decoder attention, bridge和position-wise fully-connected layers，输出一个caption features，具体公式如下图：  
-[80-3](/images/daily paper/80-3.png)  
+![80-3](/images/daily paper/80-3.png)  
 
 最后是generator，generator的作用是根据bi-modal decoder输出的captiono features对下一个caption word的分布进行建模，说白了就是一个分类层，这很自然的可以想到用FC+Softmax来实现。  
 
