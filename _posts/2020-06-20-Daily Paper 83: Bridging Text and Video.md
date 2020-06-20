@@ -33,13 +33,37 @@ redirect_from:
 模型示意图如下:  
 ![83-3](/images/daily paper/83-3.png)  
 
+从上图可以看出整个模型是一个基于GPT2架构的多层Transformer encoder，更详细点来说，其实是一个12层的只有decoder的transformer。对于文本的输入，使用GPT2的设置，将输入的语句导入WordPieces中进行标注。对于视频和音频输入，将视频分为T个片段，每个片段有一个带有l个视频帧的滑动窗口，接着使用预训练的I3D-rgb和I3D-flow模型来提取rgb和光流的视频特征。由于音频和视频是对齐的，因此选用了相同segment的音频，使用预训练的VGGish模型来提取d维视频特征，接着将rgb、光流和音频特征concat到一起，得到video-audio特征VA。VA被通往一个FC层中(Video Embedder)，投射到和文本embedding相同的embedding空间中。  
 
+正如上图所示，为了使得模型能够分别输入特征的不同模态部分，以及充分利用语序的顺序，每一个word token的最终表示是通过将每个单词的word embedding(WE), positional encoding(PE)和segment embedding(SE)加和得到。  
 
+### Multi-task Learning  
 
+为了调优该模型，作者引入了三个不同的任务，分别是根据视频、音频、caption和对话历史的Response Language Modeling，根据caption和对话的Video-Audio Sequence Modeling，根据视频和音频的Caption Language Modeling，看起来和自监督的trick类似，把这几个已知的信息分别去掉几个当成新的任务。  
 
+首先是RLM任务，该任务使用负对数似然函数来实现，公式如下:  
+![83-4](/images/daily paper/83-4.png)  
 
+其中θ是可训练的参数。  
 
+其次是VASM任务，作者使用video-audio特征回归方法来预测，使用L2loss来训练该任务，公式如下:  
+![83-5](/images/daily paper/83-5.png)  
 
+最后是CLM人为奴，和RLM任务类似，也是负对数似然估计，公式如下:  
+![83-6](/images/daily paper/83-6.png)  
+
+## Experiment  
+
+实验的baseline有三个，首先是naive fusion，由任务的发起人提供，使用一个投影矩阵来整合所有的模态信息;其次是层级注意力Hierarchical Attention;最后是MTN Multimodal Transformer Networks，该文章接下来会介绍到。  
+
+实验的metric有两个，第一个是objective evaluation，即自然语言生成实验中普遍采用的衡量方式，比如BLEU，METEOR，ROUGE-L和CIDEr。第二个是subjective evaluation，对于对话生成任务来说，该评价指标是很重要的，该任务的组织者找了很多人来根据回答的正确性、通顺性、信息含量和恰当性来给出他们主观的评价。  
+
+评价结果如下:  
+![83-7](/images/daily paper/83-7.png)  
+
+## Conclusion  
+
+作者提出了一个基于预训练模型的多模态的对话生成模型，并使用multi-task learning的方式来学习到更为准确、更富有信息的的表示。作者认为可以使用更多视频特征，比如ResNet特征来改善性能，也可以该方式应用到其他多模态任务中。在我看来，这篇文章的transformer显得中规中矩，并不是我理解中的multimodal transformer，而是将多模态信息简单的concat到一起之后生成联合表示，然后通往transformer中。不过作者提出的multi-task倒是挺有意思，我觉得和self-supervised有异曲同工之妙，之后有机会可以试试这种实验方法。  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
