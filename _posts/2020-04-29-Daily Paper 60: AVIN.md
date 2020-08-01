@@ -38,7 +38,7 @@ redirect_from:
 
 ## Conclusion  
 
-这篇文章的novelty在于搞了一套新的fusion和attention方法，得到了略高于STOA的表现，算是一篇ICASSP级别的文章吧。  
+这篇文章的novelty在于搞了一套新的fusion和attention方法，得到了略高于SOTA的表现，算是一篇ICASSP级别的文章吧。  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
