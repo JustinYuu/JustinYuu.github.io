@@ -14,9 +14,9 @@ redirect_from:
 
 这篇是国立台湾大学发在ICASSP2019上的，是对Multimodal Event Localization的一篇改进文章。ICASSP的文章大家都懂，所以我就简要介绍一下算法就好了。  
 
-作者提出了一个叫做Audio-Visual sequence-to-sequence dual network(AVSDN)的网络，使用seq2seq的方法促使模型学到全局和局部的事件信息。该算法能够同时应用到全监督和弱监督的event localization中，并超越STOA的表现。  
+作者提出了一个叫做Audio-Visual sequence-to-sequence dual network(AVSDN)的网络，使用seq2seq的方法促使模型学到全局和局部的事件信息。该算法能够同时应用到全监督和弱监督的event localization中，并超越SOTA的表现。  
 
-我们都知道所谓的STOA其实就只有一个，就是前面的那篇AVE-ECCV18，但是作者认为那篇论文的作者只考虑到了视频和音频内部的时序关系，而没有考虑到跨模态的关系，所以作者使用了一个基于seq2seq和自编码器的模型，将每一个时间片段的音频和视觉数据作为输入，使用seq2seq的方式来探究全局和局部的事件信息。此外，作者的模型可以用端对端的形式进行弱监督或是全监督的训练。  
+我们都知道所谓的SOTA其实就只有一个，就是前面的那篇AVE-ECCV18，但是作者认为那篇论文的作者只考虑到了视频和音频内部的时序关系，而没有考虑到跨模态的关系，所以作者使用了一个基于seq2seq和自编码器的模型，将每一个时间片段的音频和视觉数据作为输入，使用seq2seq的方式来探究全局和局部的事件信息。此外，作者的模型可以用端对端的形式进行弱监督或是全监督的训练。  
 
 ## Method  
 
