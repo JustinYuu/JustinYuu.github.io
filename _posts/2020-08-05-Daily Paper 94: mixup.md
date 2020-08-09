@@ -8,7 +8,7 @@ redirect_from:
   - /2020/08/05/
 ---
 
-# Daily Paper 94: Synthesizer: Rethinking Self-Attention in Transformer Models  
+# Daily Paper 94: Mixup: Beyond empirical risk minimization  
 
 ## Introduction  
 
