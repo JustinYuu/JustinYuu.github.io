@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Daily Paper 96: ViT"
+title: "Daily Paper 96: Visual Transformer"
 description: "Notes"
 categories: [CV-Vision-Transformer]
 tags: [Paper]
@@ -18,13 +18,12 @@ redirect_from:
 
 那又从之前的研究中，我们可以得知，self-attention和convolution在一定条件下可以相互转化。从之前Ramachandran在CVPR2019的文章中，我们已经知道transformer在强先验假设下能够得到图灵完备，而从之前Jaggi在ICLR2020的文章中，我们又可以知道transformer在采用特定位置编码的条件下可以达到在处理图像的原理上和CNN完全相同。那么从理论上，之前的工作已经证明了transformer能够替代CNN，即ICLR2020那篇文章一出现，就预示着transformer在理论上其实可以应用在CV领域的所有任务上。  
 
-从transformer席卷CV界这一现象，我也逐渐对AI学术界的规律有点了解了。其实researchers可以分成几个评级，tier 1的researchers能够提出新的范式，这通常需要理论上的一些证明，比如之前Ramachandran和Jaggi对于transformer和convolution关系的证明，tier 2的researchers虽然无法从理论上进行证明，或者说虽然压根看不懂证明，但是能够捕捉到这些范式的证明背后所蕴藏的价值，以视觉transformer为例，既然transformer能够替代CNN，那在CV界的很多方法是不是也能用transformer来实现呢？于是就有了这一大堆视觉transformer在各大领域的应用文。tier 3的researchers们就稍差一些，可能并不知道有这种范式的证明，只知道现在视觉transformer挺火，那我也挑个任务搞一搞试试。其实每个时代都有不同的行之有效的范式可供使用，如果能够抓住最前沿的范式，并进而想到行之有效的应用方式，tier 1可能达不到，但是达到tier 2水几篇顶会应该是没问题的。以后我的博客也会尽量少记录这些应用文，而是会对ICLR和NeuIPS上一些新的paradigm做一些记录。  
+从transformer席卷CV界这一现象，我也逐渐对AI学术界的规律有点了解了。其实researchers可以分成几个评级，tier 1的researchers能够提出新的范式，这通常需要理论上的一些证明，比如之前Ramachandran和Jaggi对于transformer和convolution关系的证明，tier 2的researchers虽然无法从理论上进行证明，或者说虽然压根看不懂证明，但是能够捕捉到这些范式的证明背后所蕴藏的价值，以视觉transformer为例，既然transformer能够替代CNN，那在CV界的很多任务是不是也能用transformer来实现呢？于是就有了这一大堆视觉transformer在各大领域的应用文。tier 3的researchers们就稍差一些，可能并不知道有这种范式的证明，只知道现在视觉transformer挺火，那我也挑个任务搞一搞试试。其实每个时代都有不同的行之有效的范式可供使用，如果能够抓住最前沿的范式，并进而想到行之有效的应用方式，tier 1可能达不到，但是达到tier 2水几篇顶会应该是没问题的。以后我的博客也会尽量少记录这些应用文，而是会对ICLR和NeuIPS上一些新的paradigm做一些记录。  
 
 ## Introduction  
 
-对于这些应用文，第一篇自然是从第一枪ViT开始讲起。Visual Transformer其实据我所知，应该不是第一个在CV领域应用Transformer的文章，比如在视频的时序部分，早已有很多基于自注意力机制的应用，在小样本领域，比如CVPR2020的FEAT，也有tranformer的身影。在跨模态领域，比如ViLBert和VideoBERT，也有将图像的不同patch放入transformer的先例。然而这篇文章我认为最大的贡献，是在空间维度上将transformer的作用在纯CV任务上发挥出来，以及如何将positional encoding应用在2D领域，从而起到代替卷积的作用。  
+Visual Transformer其实不是纯粹的transformer架构，而是transformer架构和convolution操作的结合。在作者的introduction部分中，作者提出了3个convolution存在的问题：  
 
-在作者的introduction部分中，作者提出了3个convolution存在的问题。  
 1.Not all pixels are created equal.这句反人权宣言的句子想要说明的是在图像分类的过程中，并不是每一个像素的重要性都是相同的。比如物体的像素就比背景像素重要，而convolution这一操作自然无法分辨哪个像素更重要，所以它会平等的处理所有的像素，从而导致出力不讨好的现象，开销不小，但是效果又不是很好。  
 2.Not all images have all concepts. 对于一些low-level的特征，使用特定的卷积核去处理是没问题的，因为每一个图片都会有这些low-level的信息，比如边角和边缘等等。但是对于high-level的信息，比如对狗、猫、耳朵等特定形状的识别，就不需要设置特定的卷积核了，因为并不是每一个图片里都会有狗。所以这些大量的high-level的卷积核可能在识别某些物体时被训练出来，但是在很大一部分时间内(看不到这些物体时)发挥不出作用，造成了浪费。  
 3.Convolutions struggle to relate spatially-distant concepts. 卷积无法获取长距离依赖性，这个是老生常谈了，就不再赘叙。  
@@ -36,9 +35,9 @@ redirect_from:
 
 ## Method  
 
-我始终抱着这样一个观点：在所有的vision transformer应用文中，transformer都应是一个工具，而不应是最大的贡献点。这是因为transformer能替代CNN也不是应用文里提出的，而是别人早已证明的。那么一个应用文之所以能够发表，除了在数据集上的点高之外，一定要提出为了能够将transformer应用在这一任务上所做的适配性修改。ViT作为第一个应用文，他所应用的任务是最为基础的任务，也是大家的关注度最高的任务：图像分类。而我认为他所做的最有意义的修改，就是对high-level语义的token化，以及将token的反向project。  
+我始终抱着这样一个观点：在所有的vision transformer应用文中，transformer都应是一个工具，而不应是最大的贡献点。这是因为transformer能替代CNN也不是应用文里提出的，而是别人早已证明的。那么一个应用文之所以能够发表，除了在数据集上的点高之外，一定要提出为了能够将transformer应用在这一任务上所做的适配性修改。Visual Transformer应用的任务是最为基础的任务，也是大家的关注度最高的任务：图像分类。而我认为他所做的最有意义的修改，就是对high-level语义的token化，以及将token的反向project。  
 
-如上图所示，ViT的transformer模块包含三部分，首先将像素分组为不同token，每个token代表不同的语义概念，然后用transformer处理token，最后将这些token投影到原有的特征图中进行下一轮处理。其中第一步和第三步应该就是本文最大的创新点了，以下详细介绍。  
+如上图所示，Visual Transformer的transformer模块包含三部分，首先将像素分组为不同token，每个token代表不同的语义概念，然后用transformer处理token，最后将这些token投影到原有的特征图中进行下一轮处理。其中第一步和第三步应该就是本文最大的创新点了，以下详细介绍。  
 
 ### Tokenizer  
 
@@ -65,13 +64,13 @@ redirect_from:
 
 ## Experiment  
 
-作者应用的是分类任务，所以在图像分类和语义分割上进行了实验。对于图像分类，可以直接使用，而对于语义分割，作者将其和特征金字塔网络FPN结合，用ViT来从金字塔网络的所有特征图中生成token进行处理，再重投影到金字塔上。  
+作者应用的是分类任务，所以在图像分类和语义分割上进行了实验。对于图像分类，可以直接使用，而对于语义分割，作者将其和特征金字塔网络FPN结合，用Visual Transformer来从金字塔网络的所有特征图中生成token进行处理，再重投影到金字塔上。  
 
 结果就不放了，总之是行之有效的。  
 
 ## Conclusion  
 
-简单来说，这篇文章最大的贡献，我认为是在思想上提出了将transformer应用到传统vision任务是可行的，并在实验上屠榜来证明了这一点。此外，在结构上tokenizer应该是最大的贡献，避免了直接将特征放到transformer造成的维度爆炸。这篇文章虽然实现起来比较简单，但是不论是从理论的阐述，结构的设计，还是实验的结果来看都非常优秀，是一篇不可多得的好文章。  
+简单来说，这篇文章最大的贡献，我认为是在思想上提出了将transformer应用到传统vision任务是可行的，并在实验上屠榜来证明了这一点。此外，在结构上tokenizer应该是最大的贡献，避免了直接将特征放到transformer造成的维度爆炸。这篇文章虽然实现起来比较简单，但是不论是从理论的阐述，结构的设计，还是实验的结果来看都非常优秀，是一篇不可多得的好文章。但是此文章也有一定的局限性，比如没有提到positional encoding,没有探究纯transformer架构的表现等等。  
 
 ---
 本博客支持disqus实时评论功能，如有错误或者建议，欢迎在下方评论区提出，共同探讨。  
