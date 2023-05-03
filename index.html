@@ -220,12 +220,12 @@
 		  <hr>
 
 
-  		  <center><h1>Abstract</h1></center><table align="center" width="720px">
+  		  <center><h1>Abstract</h1></center><table align="center" width="700px">
 				
 		  </table>
 		  <center>
 			<span>
-				We consider the problem of generating musical soundtracks in sync with rhythmic visual cues. Most existing works rely on pre-defined music representations, leading to the incompetence of generative flexibility and complexity. Other methods directly generating video-conditioned waveforms suffer from limited scenarios, short lengths, and unstable generation quality. To this end, we present Long-Term Rhythmic Video Soundtracker (LORIS), a novel framework to synthesize long-term conditional waveforms. Specifically, our framework consists of a latent conditional diffusion probabilistic model to perform waveform synthesis. Furthermore, a series of context-aware conditioning encoders are proposed to take temporal information into consideration for a long-term generation. Notably, we extend our model's applicability from dances to multiple sports scenarios such as floor exercise and figure skating. To perform comprehensive evaluations, we establish a benchmark for rhythmic video soundtracks including the pre-processed dataset, improved evaluation metrics, and robust generative baselines. Extensive experiments show that our model generates long-term soun
+				We consider the problem of generating musical soundtracks in sync with rhythmic visual cues. Most existing works rely on pre-defined music representations, leading to the incompetence of generative flexibility and complexity. Other methods directly generating video-conditioned waveforms suffer from limited scenarios, short lengths, and unstable generation quality. To this end, we present Long-Term Rhythmic Video Soundtracker (LORIS), a novel framework to synthesize long-term conditional waveforms. Specifically, our framework consists of a latent conditional diffusion probabilistic model to perform waveform synthesis. Furthermore, a series of context-aware conditioning encoders are proposed to take temporal information into consideration for a long-term generation. Notably, we extend our model's applicability from dances to multiple sports scenarios such as floor exercise and figure skating. To perform comprehensive evaluations, we establish a benchmark for rhythmic video soundtracks including the pre-processed dataset, improved evaluation metrics, and robust generative baselines. Extensive experiments show that our model generates long-term soundtracks with state-of-the-art musical quality and rhythmic correspondence.
 		  	</span>
 		  </center>
   		  <br><br>
@@ -249,8 +249,8 @@
 				<td width="650px">
 					<center>
 						<span style="font-size:22px"><a>Floor Exercise (25s, 50s)</a></span><br>
-						<a><video width="160" height="120" controls><source src="./images/fe_25s.mp4"  type="video/mp4"></video></a>
-						<a><video width="160" height="120" controls><source src="./images/fe_50s.mp4"  type="video/mp4"></video></a>
+						<a><video width="320" height="240" controls><source src="./images/fe_25s.mp4"  type="video/mp4"></video></a>
+						<a><video width="320" height="240" controls><source src="./images/fe_50s.mp4"  type="video/mp4"></video></a>
 					</center>
 				</td>
 			</tr>
@@ -258,14 +258,35 @@
 				<td width="650px">
 					<center>
 						<span style="font-size:22px"><a>Figure Skating (25s, 50s)</a></span><br>
-						<a><video width="160" height="120" controls><source src="./images/fs_25s.mp4"  type="video/mp4"></video></a>
-						<a><video width="160" height="120" controls><source src="./images/fs_50s.mp4"  type="video/mp4"></video></a>
+						<a><video width="320" height="240" controls><source src="./images/fs_25s.mp4"  type="video/mp4"></video></a>
+						<a><video width="320" height="240" controls><source src="./images/fs_50s.mp4"  type="video/mp4"></video></a>
 					</center>
 				</td>
 			</tr>
 
 		  <br><br>
 		  <hr>
+		
+		  <center><h1>Methodology</h1></center><table align="center" width="720px">
+			
+		  </table><center> </center><table>
+		  
+		  <tbody><tr>
+				<td width="680px">
+				<center>
+					<a><img class="rounded" src="./images/pipeline.png" width="500px"></a><br>
+			  </center>
+			  </td>
+		  </tr>
+		  <tr>
+			  <td align="center" width="720px">
+				<span style="font-size:22px"><i>
+				  The pipeline of our proposed method.</i>
+			  </span>
+			  </td>
+		  </tr>
+		  </tbody></table>
+		  <br><br><hr>
 
 		  <center><h1>Dataset Statistics</h1></center><table align="center" width="720px">
 			
@@ -338,27 +359,6 @@
 				
 			<br><br><hr>
 			
-
-			<center><h1>Methodology</h1></center><table align="center" width="720px">
-			
-			</table><center> </center><table>
-			
-			<tbody><tr>
-				  <td width="400px">
-				  <center>
-					  <a><img class="rounded" src="./images/pipeline.png" width="500px"></a><br>
-				</center>
-				</td>
-			</tr>
-			<tr>
-				<td align="center" width="720px">
-				  <span style="font-size:14px"><i>
-					The pipeline of our proposed method.</i>
-				</span>
-				</td>
-			</tr>
-			</tbody></table>
-			<br><br><hr>
 
           <center><h1>Code</h1></center><table id="download" align="center" width="720px">
                 <center><span style="font-size:16px"><a href="https://github.com/Roc-Ng/XDVioDet">Github</a></span><br></center>
