@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+  <!-- Placeholder avatar. Replace with images/profile.jpg and update index.html. -->
+  <rect width="400" height="400" fill="#e8eef5"/>
+  <circle cx="200" cy="160" r="72" fill="#b9c8d9"/>
+  <path d="M60 400c0-85 63-140 140-140s140 55 140 140z" fill="#b9c8d9"/>
+  <text x="200" y="182" text-anchor="middle" font-family="Lato, Helvetica, Arial, sans-serif" font-size="64" font-weight="700" fill="#ffffff">JY</text>
+</svg>
