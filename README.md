@@ -9,5 +9,5 @@ Plain HTML/CSS, based on [Jon Barron's template](https://github.com/jonbarron/jo
 - **News**: add a `<li>` at the top of the `News` list in `index.html`.
 - **Selected Publications**: copy any `<tr>...</tr>` block, put a teaser image (~480px wide) in `images/`, and edit the text.
 - **Other Publications**: add a `<li>` to the `publist`.
-- **Photo**: replace `images/profile.svg` (placeholder) with your photo, e.g. `images/profile.jpg`, and update the two paths in the intro of `index.html`.
+- **Photo**: `images/profile.jpg` (600x600, shown as a circle). Overwrite this file to change the photo.
 - **CV**: put the PDF in `data/` and uncomment the CV link in the intro.
