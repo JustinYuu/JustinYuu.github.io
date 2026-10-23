@@ -212,7 +212,7 @@ span.highlight {
     max-width: 100% !important;
     box-sizing: border-box;
   }
-  .intro td:last-child {
+  .intro td.photo {
     text-align: center;
   }
   .intro img {
