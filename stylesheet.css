@@ -216,8 +216,8 @@ span.highlight {
     text-align: center;
   }
   .intro img {
-    width: 200px !important;
-    max-width: 60% !important;
+    width: 150px !important;
+    max-width: 50% !important;
     display: inline-block;
   }
   .one,
